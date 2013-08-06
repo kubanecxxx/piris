@@ -43,6 +43,7 @@ signals:
     void smouseMoveEvent(QMouseEvent *mouse);
     void smousePressEvent(QMouseEvent *mouse);
     void smouseReleaseEvent(QMouseEvent *mouse);
+    void mouseCoord(const QPoint & pos);
 
 public:
     void putPixel(int x , int y , QColor color);

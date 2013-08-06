@@ -88,3 +88,13 @@ bool porting::readTouchEvent(PTouchEvent *evt)
 {
     return false;
 }
+
+pixel_t porting::height() const
+{
+    return disp->height();
+}
+
+pixel_t porting::width() const
+{
+   return disp->width();
+}

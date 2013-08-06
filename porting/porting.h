@@ -30,6 +30,9 @@ private:
     void putRectangle(piris::pixel_t x1, piris::pixel_t x2, piris::pixel_t y1, piris::pixel_t y2, piris::PColor color);
     void fill(piris::PColor color);
 
+    piris::pixel_t height() const ;
+    piris::pixel_t width() const;
+
 private:
     QDisplay * disp;
 

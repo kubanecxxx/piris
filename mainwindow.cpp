@@ -4,6 +4,8 @@
 #include "porting.h"
 #include "pkeyevent.h"
 #include <QTimer>
+#include "pwidget.h"
+#include "pmaster.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-   port = new porting(ui->display);
+    piris::PPortingAbstract * port;
+    port = new porting(ui->display);
 
     ui->display->setFocus();
 
@@ -19,6 +22,25 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer,SIGNAL(timeout()),this,SLOT(timeout()));
     timer->start(50);
 
+    connect(ui->display,SIGNAL(mouseCoord(QPoint)),this,SLOT(mousePos(QPoint)));
+
+    ui->display->setMinimumSize(200,300);
+
+    mast = new piris::PMaster(port);
+
+    piris::PWidget * wid;
+    wid = new piris::PWidget(mast);
+    wid->name = "screen1";
+
+    piris::PWidget * temp = new piris::PWidget(wid);
+    temp->setColor(piris::GREEN);
+    temp->setX(40);
+    temp->setY(40);
+    temp->setWidth(100);
+    temp->setHeight(100);
+    temp->name = "widget1";
+
+    mast->setActiveScreen(wid);
 }
 
 MainWindow::~MainWindow()
@@ -28,16 +50,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::timeout()
 {
-    piris::PKeyEvent evt;
-
-    static int i = 10;
-    if (port->readKeyEvent(&evt))
-    {
-        port->putPixel(i++,100,piris::PColor(piris::GREEN));
-        port->putText("moje",10,10 * i,8,piris::PColor(piris::RED));
-        port->putRectangle(0,10,0,30,piris::PColor(piris::BLUE));
-
-    }
+    mast->main();
+}
 
 
+void MainWindow::mousePos(const QPoint &pos)
+{
+    ui->spinX->setValue(pos.x());
+    ui->spinY->setValue(pos.y());
 }

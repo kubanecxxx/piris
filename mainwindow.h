@@ -10,6 +10,8 @@ class MainWindow;
 namespace piris
 {
     class PPortingAbstract;
+    class PWidget;
+    class PMaster;
 }
 
 class MainWindow : public QMainWindow
@@ -22,10 +24,13 @@ public:
     
 private:
     Ui::MainWindow *ui;
-    piris::PPortingAbstract * port;
+
+
+    piris::PMaster * mast;
 
 private slots:
     void timeout(void);
+    void mousePos(const QPoint & pos);
 };
 
 #endif // MAINWINDOW_H

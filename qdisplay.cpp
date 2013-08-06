@@ -13,6 +13,8 @@ QDisplay::QDisplay(QWidget *parent) :
 
     image = new QImage(width(),height(),QImage::Format_RGB32);
     image->fill(QColor(Qt::black).rgb());
+
+    setMouseTracking(true);
 }
 
 QDisplay::~QDisplay()
@@ -35,12 +37,14 @@ void QDisplay::mouseMoveEvent(QMouseEvent *mouse)
 {
     QFrame::mouseMoveEvent(mouse);
     emit smouseMoveEvent(mouse);
+    emit mouseCoord(mouse->pos());
 }
 
 void QDisplay::mousePressEvent(QMouseEvent *mouse)
 {
      QFrame::mousePressEvent(mouse);
      setFocus();
+
     emit smousePressEvent(mouse);
 }
 
