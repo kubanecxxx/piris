@@ -13,6 +13,8 @@ class QKeyEvent;
 namespace piris
 {
     class PKeyEvent;
+    class PTouchEvent;
+
 }
 
 class porting: public QObject, public piris::PPortingAbstract
@@ -37,7 +39,11 @@ private:
     QDisplay * disp;
 
     piris::PKeyEvent * key;
+    piris::PTouchEvent * touch;
+
     bool full;
+    bool touchfull;
+    int key2key(uint16_t);
 
 private slots:
     void keyPressEvent(QKeyEvent *key);

@@ -9,12 +9,16 @@ HEADERS += pportingabstract.h \
     passert.h \
     framework/pcolor.h \
     framework/pwidget.h \
-    framework/pmaster.h
+    framework/pmaster.h \
+    pscreen.h \
+    framework/qdebugprint.h
 
 SOURCES += \
     pkeyevent.cpp \
     ptouchevent.cpp \
     framework/pcolor.cpp \
     framework/pwidget.cpp \
-    framework/pmaster.cpp
+    framework/pmaster.cpp \
+    pscreen.cpp \
+    framework/qdebugprint.cpp
 

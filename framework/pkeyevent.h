@@ -20,6 +20,10 @@ public:
 public:
     keyEvt_t event;
     key_t key;
+    bool operator == (const PKeyEvent &other)
+    {
+        return (event == other.event && key == other.key);
+    }
 };
 
 }

@@ -6,12 +6,15 @@
 #include <QTimer>
 #include "pwidget.h"
 #include "pmaster.h"
+#include "pscreen.h"
+#include "qdebugprint.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    qDebugPrint::edit = ui->textBrowser;
 
     piris::PPortingAbstract * port;
     port = new porting(ui->display);
@@ -20,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTimer * timer = new QTimer;
     connect(timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    timer->start(50);
+    timer->start(100);
 
     connect(ui->display,SIGNAL(mouseCoord(QPoint)),this,SLOT(mousePos(QPoint)));
 
@@ -28,19 +31,41 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mast = new piris::PMaster(port);
 
-    piris::PWidget * wid;
-    wid = new piris::PWidget(mast);
+    piris::PScreen * wid;
+    wid = new piris::PScreen(mast);
     wid->name = "screen1";
 
-    piris::PWidget * temp = new piris::PWidget(wid);
+    piris::PWidget * temp = new piris::PWidget();
     temp->setColor(piris::GREEN);
     temp->setX(40);
     temp->setY(40);
     temp->setWidth(100);
     temp->setHeight(100);
-    temp->name = "widget1";
+    temp->name = ("widget 1");
+    wid->addChild(temp);
 
-    mast->setActiveScreen(wid);
+    temp = new piris::PWidget();
+    temp->setColor(piris::BLACK);
+    temp->setX(80);
+    temp->setY(80);
+    temp->setWidth(100);
+    temp->setHeight(100);
+    temp->name = ("widget 2");
+    wid->addChild(temp);
+
+
+    temp = new piris::PWidget();
+    temp->setColor(piris::BLUE);
+    temp->setX(20);
+    temp->setY(160);
+    temp->setWidth(100);
+    temp->setHeight(100);
+    temp->name = ("widget 3");
+    wid->addChild(temp);
+
+    temp->setFocus();
+    wid->makeActive();
+
 }
 
 MainWindow::~MainWindow()

@@ -5,7 +5,9 @@ namespace piris
 {
 
 class PPortingAbstract;
-class PWidget;
+class PScreen;
+class PKeyEvent;
+class PTouchEvent;
 
 class PMaster
 {
@@ -14,13 +16,17 @@ public:
 
 private:
     PPortingAbstract * hw;
-    PWidget * activeScreen;
+    PScreen * activeScreen;
     PMaster(const PMaster &);
 
+    PKeyEvent * key;
+    PTouchEvent * touch;
+
 public:
-    void setActiveScreen(PWidget * screen);
+    void setActiveScreen(PScreen * screen);
     void printScreen();
     void main();
+
 };
 
 }

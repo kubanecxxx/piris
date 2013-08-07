@@ -3,7 +3,9 @@
 namespace piris
 {
 
-PKeyEvent::PKeyEvent()
+PKeyEvent::PKeyEvent():
+    event(kNONE),
+    key(0)
 {
 }
 

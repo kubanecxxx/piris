@@ -35,7 +35,7 @@ void QDisplay::keyReleaseEvent(QKeyEvent *key)
 
 void QDisplay::mouseMoveEvent(QMouseEvent *mouse)
 {
-    QFrame::mouseMoveEvent(mouse);
+    //QFrame::mouseMoveEvent(mouse);
     emit smouseMoveEvent(mouse);
     emit mouseCoord(mouse->pos());
 }
