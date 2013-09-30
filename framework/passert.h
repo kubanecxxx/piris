@@ -3,7 +3,7 @@
 
 #define passert(condition,message) Q_ASSERT(condition)
 
-#if QT_CORE_LIB
+#ifdef QT_CORE_LIB
 #include "qdebugprint.h"
 #define qlog(text) qDebugPrint::print(text)
 #else

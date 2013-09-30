@@ -83,6 +83,17 @@ void QDisplay::putText(int x, int y, const char *data, QColor col, int size)
     repaint();
 }
 
+void QDisplay::putLine(int x1, int x2, int y1, int y2, QColor color)
+{
+    QPainter p;
+    p.begin(image);
+    p.setPen(color);
+    p.drawLine(x1,y1,x2,y2);
+
+
+    repaint();
+}
+
 void QDisplay::putRect(int x1, int x2, int y1, int y2, QColor color)
 {
     QPainter p;

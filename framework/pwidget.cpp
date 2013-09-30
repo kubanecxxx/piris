@@ -17,6 +17,9 @@ PWidget::PWidget(PWidget * par)
     p.y = 0;
     p.w = 20;
     p.h = 20;
+    p.textColor = BLACK;
+    p.textSize = 8;
+    p.text = NULL;
     p.backgroundColor = RED;
     p.flags.w = 0;
     setVisible(true);
@@ -60,6 +63,36 @@ void PWidget::draw(PPortingAbstract *disp) const
         temp = temp->next;
     }
 }
+
+pixel_t PWidget::xLocal() const
+{
+    pixel_t x=0;
+
+    if (paren)
+    {
+        x = paren->x();
+    }
+
+    x += p.x;
+
+    return x;
+}
+
+pixel_t PWidget::yLocal() const
+{
+
+    pixel_t y=0;
+
+    if (paren)
+    {
+        y = paren->y();
+    }
+
+    y += p.y;
+
+    return y;
+}
+
 
 void PWidget::AddChild(PWidget *child)
 {

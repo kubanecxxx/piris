@@ -8,6 +8,7 @@
 #include "pmaster.h"
 #include "pscreen.h"
 #include "qdebugprint.h"
+#include "pbutton.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -54,14 +55,18 @@ MainWindow::MainWindow(QWidget *parent) :
     wid->addChild(temp);
 
 
-    temp = new piris::PWidget();
-    temp->setColor(piris::BLUE);
+    temp = new piris::PButton();
+    temp->setColor(piris::WHITE);
     temp->setX(20);
-    temp->setY(160);
+    temp->setY(200);
     temp->setWidth(100);
-    temp->setHeight(100);
+    temp->setHeight(50);
     temp->name = ("widget 3");
+    temp->setText("curakasldfj");
+    temp->setTextColor(piris::BLACK);
     wid->addChild(temp);
+
+
 
     temp->setFocus();
     wid->makeActive();

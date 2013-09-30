@@ -67,6 +67,11 @@ void porting::mouseMoveEvent(QMouseEvent *mouse)
     moje = mouse->buttons();
 }
 
+void porting::putLine(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColor color)
+{
+    disp->putLine(x1,x2,y1,y2,color.get());
+}
+
 void porting::mousePressEvent(QMouseEvent *mouse)
 {
     touchfull = true;

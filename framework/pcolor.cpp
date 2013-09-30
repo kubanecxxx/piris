@@ -66,6 +66,14 @@ uint16_t PColor::getB() const
     return (data & 0b11111);
 }
 
+PColor PColor::dark(uint8_t num, uint8_t denum) const
+{
+    PColor temp;
+    temp.set(num * getR()/denum,num * getG()/denum,num  *getB()/denum);
+
+    return temp;
+}
+
 #ifdef QT_CORE_LIB
 QColor PColor::get() const
 {

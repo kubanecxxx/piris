@@ -11,7 +11,8 @@ HEADERS += pportingabstract.h \
     framework/pwidget.h \
     framework/pmaster.h \
     pscreen.h \
-    framework/qdebugprint.h
+    framework/qdebugprint.h \
+    framework/pbutton.h
 
 SOURCES += \
     pkeyevent.cpp \
@@ -20,5 +21,7 @@ SOURCES += \
     framework/pwidget.cpp \
     framework/pmaster.cpp \
     pscreen.cpp \
-    framework/qdebugprint.cpp
+    framework/qdebugprint.cpp \
+    framework/pbutton.cpp \
+    framework/pportingabstract.cpp
 

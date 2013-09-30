@@ -49,6 +49,7 @@ public:
     void putPixel(int x , int y , QColor color);
     void putText(int x, int y, const char * data, QColor col, int size);
     void putRect(int x1, int x2, int y1, int y2, QColor color);
+    void putLine(int x1, int x2, int y1, int y2, QColor color);
 };
 
 #endif // QDISPLAY_H

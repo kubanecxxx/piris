@@ -45,12 +45,15 @@ private:
     void AddSiblings(PWidget * brother);
     bool sendEvent(PKeyEvent * key, PTouchEvent * touch);
 
-
+protected:
     struct p
     {
         PColor backgroundColor;
         pixel_t x,y;
         pixel_t w,h;
+        pixel_t textSize;
+        PColor textColor;
+        const char * text;
         union
         {
             struct
@@ -65,15 +68,19 @@ private:
 
     } p;
 
+private:
     PWidget(const PWidget & other);
 
 public:
     //getters
     inline pixel_t x() const {return p.x;}
+    pixel_t xLocal() const ;
+    pixel_t yLocal() const ;
     inline pixel_t y() const {return p.y;}
     inline pixel_t width() const {return p.w;}
     inline pixel_t height() const {return p.h;}
     inline PColor color() const {return p.backgroundColor;}
+    inline PColor textColor() const {return p.textColor;}
     inline PWidget * nextSibling() const {return next;}
     PWidget * prevSibling() const;
     inline PWidget * firstChild() const {return child;}
@@ -82,6 +89,8 @@ public:
     inline bool visible() const {return p.flags.b.Visible;}
     inline bool enabled() const {return p.flags.b.Enable;}
     inline bool dragable() const {return p.flags.b.Dragable;}
+    inline pixel_t textSize() const {return p.textSize;}
+    inline const char * text() const {return p.text;}
     bool hasFocus() const;
 
     //setters
@@ -93,6 +102,9 @@ public:
     inline void setVisible(bool visible) {p.flags.b.Visible = visible;}
     inline void setEnabled(bool enable) {p.flags.b.Enable = enable;}
     inline void setDragable(bool dragable) {p.flags.b.Dragable = dragable;}
+    inline void setTextSize(pixel_t size) {p.textSize = size;}
+    inline void setText(const char * text) {p.text = text;}
+    inline void setTextColor(PColor col) {p.textColor = col;}
     void setFocus();
 
     void AddChild(PWidget * child);
