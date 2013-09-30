@@ -9,23 +9,34 @@
 namespace piris
 {
 
-PWidget::PWidget(PWidget * par)
+PWidget::PWidget(PWidgetProperties_t &prop, PWidget *par):
+    p(prop)
 {
-    paren = par;
+    construct(par);
+}
 
+PWidget::PWidget(PWidget * par):
+    p(*new PWidgetProperties_t)
+{
     p.x = 0;
     p.y = 0;
     p.w = 20;
     p.h = 20;
     p.textColor = BLACK;
-    p.textSize = 8;
+    p.font = NULL;
     p.text = NULL;
     p.backgroundColor = RED;
     p.flags.w = 0;
+    p.flags.b.ReadOnly = 0;
     setVisible(true);
     setEnabled(true);
 
+    construct(par);
+}
 
+void PWidget::construct(PWidget *par)
+{
+    paren = par;
     next = NULL;
     child = NULL;
     parScreen = NULL;
@@ -61,6 +72,12 @@ void PWidget::draw(PPortingAbstract *disp) const
     {
         temp->draw(disp);
         temp = temp->next;
+    }
+
+    if (hasFocus())
+    {
+        disp->putRectangleEmpty(x,x+w,y,y+w,parentScreen()->focusColor());
+        disp->putRectangleEmpty(x+1,x+w-1,y+1,y+h-1,parentScreen()->focusColor());
     }
 }
 
@@ -180,7 +197,7 @@ bool PWidget::sendEvent(PKeyEvent *key, PTouchEvent *touch)
  * @param touch
  * @return true pokud ho vzal
  */
-bool PWidget::eventForMe(PKeyEvent *key, PTouchEvent *touch)
+bool PWidget::eventForMe(PKeyEvent *key, PTouchEvent *touch) const
 {
     //if not for me return false
 
@@ -278,6 +295,22 @@ void PWidget::setFocus()
     passert(parScreen, "no parent screen");
     parScreen->setFocusWidget(this);
 
+}
+
+size_t PWidget::dataSize() const
+{
+    //draw all children
+    PWidget * temp = child;
+    uint16_t size = sizeof(*this);
+    if (!p.flags.b.ReadOnly)
+        size += sizeof(PWidgetProperties_t);
+
+    while(temp != NULL)
+    {
+        size += temp->dataSize();
+    }
+
+    return size;
 }
 
 }

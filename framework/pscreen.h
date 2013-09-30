@@ -30,6 +30,7 @@ private:
     struct m
     {
        PColor color;
+       PColor focusColor;
     } m;
 
     void sendEvent(PTouchEvent * touch, PKeyEvent  * key);
@@ -44,10 +45,13 @@ public:
     inline PColor color() const {return m.color;}
     inline PWidget * focusWidget() const {return focWidget;}
     inline PWidget * firstChild() const {return child;}
+    inline PColor focusColor() const {return m.focusColor;}
 
     //setters
     inline void setColor(PColor color) {m.color = color;}
+    inline void setFocusColor(PColor color) {m.color = color;}
     void setFocusWidget(PWidget * widget);
+    size_t dataSize() const;
 
     friend class PMaster;
 };

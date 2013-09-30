@@ -26,6 +26,7 @@ public:
     inline uint16_t getB() const;
     inline uint16_t rawData() const {return (data);}
     PColor dark(uint8_t num, uint8_t denum) const;
+    PColor invert() const;
 
 #ifdef QT_CORE_LIB
     QColor get() const;

@@ -13,6 +13,7 @@ PScreen::PScreen(PMaster *parent):
     child(NULL)
 {
     m.color = RED;
+    m.focusColor = m.color.invert();
 }
 
 void PScreen::draw(PPortingAbstract *port)
@@ -72,6 +73,21 @@ void PScreen::setFocusWidget(PWidget *widget)
     focWidget = widget;
 
     qlog(QString("focused widget: %1").arg(widget->name));
+}
+
+size_t PScreen::dataSize() const
+{
+    uint16_t temp = sizeof(this);
+
+
+    PWidget * t = child;
+    while(t)
+    {
+        temp += t->dataSize();
+        t = t->nextSibling();
+    }
+
+    return temp;
 }
 
 }

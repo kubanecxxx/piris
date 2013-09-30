@@ -74,6 +74,13 @@ PColor PColor::dark(uint8_t num, uint8_t denum) const
     return temp;
 }
 
+PColor PColor::invert() const
+{
+    PColor temp ;
+    temp.set(255-getR(),255-getG(),255-getB());
+    return temp;
+}
+
 #ifdef QT_CORE_LIB
 QColor PColor::get() const
 {

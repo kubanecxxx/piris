@@ -10,6 +10,7 @@
 namespace piris
 {
 
+class PFont;
 class PPortingAbstract;
 class PKeyEvent;
 class PTouchEvent;
@@ -18,40 +19,13 @@ class PScreen;
 class PWidget
 {
 public:
-    PWidget(PWidget * par = 0);
-#ifdef QT_CORE_LIB
-    QString name;
-#endif
 
-
-public:
-
-protected:
-    //virtuální metody s událostma
-    virtual void draw(PPortingAbstract * disp) const;
-    virtual bool eventForMe(PKeyEvent * key, PTouchEvent * touch);
-    virtual void processEvent(PKeyEvent * key, PTouchEvent * touch);
-
-private:
-    PWidget * next;
-    PWidget * child;
-    PWidget * paren;
-    PScreen * parScreen;
-
-    inline void setParent(PWidget * par) {paren = par;}
-    inline void setParentScreen(PScreen * screen) {parScreen = screen;}
-
-
-    void AddSiblings(PWidget * brother);
-    bool sendEvent(PKeyEvent * key, PTouchEvent * touch);
-
-protected:
-    struct p
+    typedef struct
     {
         PColor backgroundColor;
         pixel_t x,y;
         pixel_t w,h;
-        pixel_t textSize;
+        PFont * font;
         PColor textColor;
         const char * text;
         union
@@ -62,11 +36,46 @@ protected:
                 uint8_t Enable :1;
                 uint8_t Visible :1;
                 uint8_t Dragable :1;
+                uint8_t ReadOnly :1;
             } b;
             uint16_t w;
         } flags;
 
-    } p;
+    } PWidgetProperties_t;
+
+
+    PWidget(PWidget * par = 0);
+    PWidget(PWidgetProperties_t & prop, PWidget * par = NULL);
+#ifdef QT_CORE_LIB
+    QString name;
+#endif
+
+
+public:
+
+
+protected:
+    //virtuální metody s událostma
+    virtual void draw(PPortingAbstract * disp) const;
+    virtual bool eventForMe(PKeyEvent * key, PTouchEvent * touch) const;
+    virtual void processEvent(PKeyEvent * key, PTouchEvent * touch);
+
+private:
+    PWidget * next;
+    PWidget * child;
+    PWidget * paren;
+    PScreen * parScreen;
+
+    inline void setParent(PWidget * par) {paren = par;}
+    inline void setParentScreen(PScreen * screen) {parScreen = screen;}
+    void construct(PWidget * par);
+
+
+    void AddSiblings(PWidget * brother);
+    bool sendEvent(PKeyEvent * key, PTouchEvent * touch);
+
+protected:
+    PWidgetProperties_t & p;
 
 private:
     PWidget(const PWidget & other);
@@ -89,8 +98,9 @@ public:
     inline bool visible() const {return p.flags.b.Visible;}
     inline bool enabled() const {return p.flags.b.Enable;}
     inline bool dragable() const {return p.flags.b.Dragable;}
-    inline pixel_t textSize() const {return p.textSize;}
+    inline PFont * font() const {return p.font;}
     inline const char * text() const {return p.text;}
+    virtual size_t dataSize() const;
     bool hasFocus() const;
 
     //setters
@@ -102,7 +112,7 @@ public:
     inline void setVisible(bool visible) {p.flags.b.Visible = visible;}
     inline void setEnabled(bool enable) {p.flags.b.Enable = enable;}
     inline void setDragable(bool dragable) {p.flags.b.Dragable = dragable;}
-    inline void setTextSize(pixel_t size) {p.textSize = size;}
+    inline void setFont(PFont * font) {p.font = font;}
     inline void setText(const char * text) {p.text = text;}
     inline void setTextColor(PColor col) {p.textColor = col;}
     void setFocus();
@@ -110,7 +120,6 @@ public:
     void AddChild(PWidget * child);
     friend class PScreen;
 };
-
 
 }
 #endif // PWIDGET_H

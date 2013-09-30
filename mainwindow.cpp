@@ -9,6 +9,8 @@
 #include "pscreen.h"
 #include "qdebugprint.h"
 #include "pbutton.h"
+#include "pfont.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     piris::PScreen * wid;
     wid = new piris::PScreen(mast);
     wid->name = "screen1";
+    int i;
 
     piris::PWidget * temp = new piris::PWidget();
     temp->setColor(piris::GREEN);
@@ -52,25 +55,34 @@ MainWindow::MainWindow(QWidget *parent) :
     temp->setWidth(100);
     temp->setHeight(100);
     temp->name = ("widget 2");
+    i = temp->dataSize();
     wid->addChild(temp);
+
+
+    piris::PFont * font = new piris::PFont(NULL,8,6);
 
 
     temp = new piris::PButton();
     temp->setColor(piris::WHITE);
+    temp->setFont(font);
     temp->setX(20);
     temp->setY(200);
     temp->setWidth(100);
-    temp->setHeight(50);
+    temp->setHeight(30);
     temp->name = ("widget 3");
     temp->setText("curakasldfj");
     temp->setTextColor(piris::BLACK);
+
     wid->addChild(temp);
+    i = temp->dataSize();
 
 
 
     temp->setFocus();
     wid->makeActive();
 
+
+    ui->spinMemory->setValue(wid->dataSize());
 }
 
 MainWindow::~MainWindow()

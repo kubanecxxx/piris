@@ -28,7 +28,7 @@ private:
     bool readTouchEvent(piris::PTouchEvent *evt);
 
     void putPixel(piris::pixel_t x, piris::pixel_t y, piris::PColor color);
-    void putText(const char *text, piris::pixel_t x, piris::pixel_t y, piris::pixel_t size,piris::PColor color);
+    void putText(const char *text, piris::pixel_t x, piris::pixel_t y,const piris::PFont & font,piris::PColor color);
     void putRectangle(piris::pixel_t x1, piris::pixel_t x2, piris::pixel_t y1, piris::pixel_t y2, piris::PColor color);
     void fill(piris::PColor color);
     void putLine(piris::pixel_t x1, piris::pixel_t x2, piris::pixel_t y1, piris::pixel_t y2, piris::PColor color);

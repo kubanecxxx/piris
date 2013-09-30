@@ -7,6 +7,7 @@
 #include "passert.h"
 #include "ptypes.h"
 #include <QDebug>
+#include "pfont.h"
 
 using namespace piris;
 
@@ -99,9 +100,9 @@ void porting::putRectangle(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColo
     disp->putRect(x1,x2,y1,y2,color.get());
 }
 
-void porting::putText(const char *text, pixel_t x, pixel_t y, pixel_t size, PColor color)
+void porting::putText(const char *text, pixel_t x, pixel_t y, const PFont & font, PColor color)
 {
-    disp->putText(x,y,text,color.get(),size);
+    disp->putText(x,y,text,color.get(),font.height());
 }
 
 void porting::fill(PColor color)

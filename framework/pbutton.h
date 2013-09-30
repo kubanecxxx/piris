@@ -12,10 +12,12 @@ public:
     PButton(PWidget * par = 0);
     typedef void(*cb_t)(PButton * but);
     void setCallback(cb_t c) {cb = c;}
+    virtual size_t dataSize() const;
 
 protected:
     virtual void draw(PPortingAbstract *disp) const;
     virtual void processEvent(PKeyEvent *key, PTouchEvent *touch);
+
 
 private:
     bool pressed;
