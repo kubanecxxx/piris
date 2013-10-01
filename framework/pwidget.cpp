@@ -253,7 +253,7 @@ bool PWidget::eventForMe(PKeyEvent *key, PTouchEvent *touch) const
     return false;
 }
 
-void PWidget::processEvent(PKeyEvent *key, PTouchEvent *touch)
+void PWidget::processEvent(PKeyEvent *key,  PTouchEvent *touch)
 {
     if (dragable())
     {
@@ -265,25 +265,7 @@ void PWidget::processEvent(PKeyEvent *key, PTouchEvent *touch)
     if (touch->event == PRESS)
         setFocus();
 
-    PWidget * p = 0;
-    if (key->event == PRESSED)
-    {
-        if (key->key == kUP)
-        {
-           p = prevSibling();
-           while(p != NULL && !(p->visible() && p->enabled()))
-               p = p->prevSibling();
-        }
-        if (key->key == kDOWN)
-        {
-            p = nextSibling();
-            while(p != NULL &&!(p->visible() && p->enabled()))
-                p = p->nextSibling();
-        }
-
-        if (p)
-            p->setFocus();
-    }
+    standardNextPrev(key);
 
     if (touch->event == RELEASE && touch->locked())
     {
@@ -361,6 +343,34 @@ PFont * PWidget::font() const
     }
     //no widget has valid font so take font from screen
     return  parentScreen()->font();
+}
+
+/**
+ * @brief PWidget::standardNextPrev
+ * standard selecting previous/next widget by up/down key
+ * @param key
+ */
+void PWidget::standardNextPrev(const PKeyEvent * key)
+{
+    PWidget * p = 0;
+    if (key->event == PRESSED)
+    {
+        if (key->key == kUP)
+        {
+           p = prevSibling();
+           while(p != NULL && !(p->visible() && p->enabled()))
+               p = p->prevSibling();
+        }
+        if (key->key == kDOWN)
+        {
+            p = nextSibling();
+            while(p != NULL &&!(p->visible() && p->enabled()))
+                p = p->nextSibling();
+        }
+
+        if (p)
+            p->setFocus();
+    }
 }
 
 }

@@ -23,6 +23,14 @@ PButton::PButton(PWidgetProperties_t &props, PWidget *par):
 {
 }
 
+PButton::PButton(const PWidgetProperties_t &props, PWidget *par):
+    PWidget(props,par),
+    pressed(false),
+    cb(NULL)
+{
+
+}
+
 void PButton::draw(PPortingAbstract *disp) const
 {
     PFont * f = font();
@@ -77,26 +85,10 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
         pressed = false;
     }
 
-    PWidget * p = 0;
+    standardNextPrev(key);
+
     if (key->event == PRESSED)
     {
-        if (key->key == kUP)
-        {
-           p = prevSibling();
-           while(p != NULL && !(p->visible() && p->enabled()))
-               p = p->prevSibling();
-        }
-        if (key->key == kDOWN)
-        {
-            p = nextSibling();
-            while(p != NULL &&!(p->visible() && p->enabled()))
-                p = p->nextSibling();
-        }
-
-        if (p)
-        {
-            p->setFocus();
-        }
         if (key->key == kENTER)
         {
             qlog(name + ": button press callback key");

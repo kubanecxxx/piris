@@ -64,6 +64,7 @@ protected:
     virtual void draw(PPortingAbstract * disp) const;
     virtual bool eventForMe(PKeyEvent * key, PTouchEvent * touch) const;
     virtual void processEvent(PKeyEvent * key, PTouchEvent * touch);
+    void standardNextPrev(const PKeyEvent * key);
 
 private:
     PWidget * next;

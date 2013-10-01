@@ -24,9 +24,10 @@ protected:
 };
 
 //static widget properties initializer for label
+//fontprops is used for compute widget width and height
 #define DECL_LABEL_PROPERTIES(name,x,y,text,textColor,backgroundColor,font,fontprops) \
     _DECL_WIDGET_PROPERTIES(name,x,y,\
-    (fontprops.width *sizeof(text) )\
+    (fontprops.width *(sizeof(text)  - 1))\
     ,fontprops.height\
     ,text,textColor,backgroundColor,font,0)
 

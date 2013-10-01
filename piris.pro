@@ -15,6 +15,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     qdisplay.cpp \
+    guiinit.cpp
 
 
 HEADERS  += mainwindow.h \
