@@ -27,7 +27,7 @@ typedef uint16_t color_t;
 
 typedef enum globalColors_t
 {
-    RED = 0xF100, GREEN = 0x07E0, BLACK = 0, WHITE = 0xFFFF, BLUE = 0x001F
+    INVALID= 0,RED = 0xF100, GREEN = 0x07E0, BLACK = 1, WHITE = 0xFFFF, BLUE = 0x001F
 } globalColors_t;
 
 //touch

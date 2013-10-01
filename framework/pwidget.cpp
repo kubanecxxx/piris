@@ -12,6 +12,13 @@ namespace piris
 PWidget::PWidget(PWidgetProperties_t &prop, PWidget *par):
     p(prop)
 {
+    p.flags.b.ReadOnly = 0;
+    construct(par);
+}
+
+PWidget::PWidget(const PWidgetProperties_t &prop, PWidget *par):
+    p((PWidgetProperties_t &) prop)
+{
     construct(par);
 }
 
@@ -62,6 +69,10 @@ void PWidget::draw(PPortingAbstract *disp) const
 
     x += p.x; y += p.y;
     w += p.w; h += p.h;
+
+    PColor tmp = p.backgroundColor;
+    if (!tmp.isValid())
+        tmp = parentScreen()->color();
 
     disp->putRectangle(x,x+w,y,y+h, p.backgroundColor);
 

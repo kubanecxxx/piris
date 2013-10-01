@@ -5,7 +5,7 @@ namespace piris
 
 PColor::PColor()
 {
-    data = 0;
+    data = INVALID;
 }
 
 PColor::PColor(uint16_t r, uint16_t g, uint16_t b)

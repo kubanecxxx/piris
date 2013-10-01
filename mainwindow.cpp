@@ -11,6 +11,7 @@
 #include "pbutton.h"
 #include "pfont.h"
 #include <QDebug>
+#include "plabel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -58,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     i = temp->dataSize();
     wid->addChild(temp);
 
+     temp->setFocus();
 
     piris::PFont * font = new piris::PFont(NULL,8,6);
 
@@ -74,15 +76,35 @@ MainWindow::MainWindow(QWidget *parent) :
     temp->setTextColor(piris::BLACK);
 
     wid->addChild(temp);
+
+    temp = new piris::PLabel();
+    //temp->setColor(piris::WHITE);
+    temp->setFont(font);
+    temp->setX(20);
+    temp->setY(250);
+    temp->name = ("label");
+    temp->setText("label");
+    temp->setTextColor(piris::BLACK);
+    ((piris::PLabel*)temp)->recompute();
+
+    wid->addChild(temp);
+
     i = temp->dataSize();
 
 
 
-    temp->setFocus();
+
     wid->makeActive();
 
 
     ui->spinMemory->setValue(wid->dataSize());
+
+    //DECL_WIDGET_PROPERTIES(moje,10,20,100,100,"text",piris::BLACK,piris::WHITE,NULL,1);
+
+    //temp = new piris::PWidget(coje);
+    //temp->setX(50);
+
+    asm("nop");
 }
 
 MainWindow::~MainWindow()

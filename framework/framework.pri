@@ -7,13 +7,14 @@ HEADERS += pportingabstract.h \
     ptouchevent.h \
     ptypes.h \
     passert.h \
-    framework/pcolor.h \
+    pcolor.h \
     framework/pwidget.h \
     framework/pmaster.h \
     pscreen.h \
-    framework/qdebugprint.h \
-    framework/pbutton.h \
-    framework/pfont.h
+    qdebugprint.h \
+    pbutton.h \
+    pfont.h \
+    framework/plabel.h
 
 SOURCES += \
     pkeyevent.cpp \
@@ -25,5 +26,6 @@ SOURCES += \
     framework/qdebugprint.cpp \
     framework/pbutton.cpp \
     framework/pportingabstract.cpp \
-    framework/pfont.cpp
+    framework/pfont.cpp \
+    framework/plabel.cpp
 

@@ -16,6 +16,13 @@ PButton::PButton(PWidget * par ):
 {
 }
 
+PButton::PButton(PWidgetProperties_t &props, PWidget *par):
+    PWidget(props,par),
+    pressed(false),
+    cb(NULL)
+{
+}
+
 void PButton::draw(PPortingAbstract *disp) const
 {
     passert(p.font,"font must not be NULL");

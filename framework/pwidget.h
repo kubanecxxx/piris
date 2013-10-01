@@ -7,6 +7,10 @@
 #include <QString>
 #endif
 
+#include "passert.h"
+#define writeenableassert() passert(p.flags.b.ReadOnly == 0,"is readonly")
+#define wea() writeenableassert()
+
 namespace piris
 {
 
@@ -46,6 +50,7 @@ public:
 
     PWidget(PWidget * par = 0);
     PWidget(PWidgetProperties_t & prop, PWidget * par = NULL);
+    PWidget(const PWidgetProperties_t & prop, PWidget * par = NULL);
 #ifdef QT_CORE_LIB
     QString name;
 #endif
@@ -104,17 +109,17 @@ public:
     bool hasFocus() const;
 
     //setters
-    inline void setX(pixel_t x) {p.x = x;}
-    inline void setY(pixel_t y) {p.y = y;}
-    inline void setWidth(pixel_t width) {p.w = width;}
-    inline void setHeight(pixel_t height) {p.h = height;}
-    inline void setColor(PColor col) {p.backgroundColor = col;}
-    inline void setVisible(bool visible) {p.flags.b.Visible = visible;}
-    inline void setEnabled(bool enable) {p.flags.b.Enable = enable;}
-    inline void setDragable(bool dragable) {p.flags.b.Dragable = dragable;}
-    inline void setFont(PFont * font) {p.font = font;}
-    inline void setText(const char * text) {p.text = text;}
-    inline void setTextColor(PColor col) {p.textColor = col;}
+    inline void setX(pixel_t x) {wea() ;p.x = x;}
+    inline void setY(pixel_t y) {wea();p.y = y;}
+    inline void setWidth(pixel_t width) {wea();p.w = width;}
+    inline void setHeight(pixel_t height) {wea();p.h = height;}
+    inline void setColor(PColor col) {wea();p.backgroundColor = col;}
+    inline void setVisible(bool visible) {wea();p.flags.b.Visible = visible;}
+    inline void setEnabled(bool enable) {wea();p.flags.b.Enable = enable;}
+    inline void setDragable(bool dragable) {wea();p.flags.b.Dragable = dragable;}
+    inline void setFont(PFont * font) {wea();p.font = font;}
+    inline void setText(const char * text) {wea();p.text = text;}
+    inline void setTextColor(PColor col) {wea();p.textColor = col;}
     void setFocus();
 
     void AddChild(PWidget * child);
@@ -122,4 +127,16 @@ public:
 };
 
 }
+
+
+#define DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable) \
+    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable,0,1,1)
+
+#define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable,dragable,visible,readonly) \
+    piris::PWidget::PWidgetProperties_t name =  \
+    { \
+    backgroundColor,x,y,w,h,font,textColor,text, {enable,visible,dragable,readonly} \
+    }
+
+
 #endif // PWIDGET_H
