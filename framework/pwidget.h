@@ -8,7 +8,7 @@
 #endif
 
 #include "passert.h"
-#define writeenableassert() passert(p.flags.b.ReadOnly == 0,"is readonly")
+#define writeenableassert() passert(IsReadOnly() == 0,"is readonly")
 #define wea() writeenableassert()
 
 namespace piris
@@ -34,15 +34,15 @@ public:
         const char * text;
         union
         {
+            uint16_t w;
             struct
             {
-
                 uint8_t Enable :1;
                 uint8_t Visible :1;
                 uint8_t Dragable :1;
                 uint8_t ReadOnly :1;
+                uint8_t IsContainer: 1;
             } b;
-            uint16_t w;
         } flags;
 
     } PWidgetProperties_t;
@@ -79,10 +79,9 @@ private:
     void AddSiblings(PWidget * brother);
     bool sendEvent(PKeyEvent * key, PTouchEvent * touch);
 
-protected:
-    PWidgetProperties_t & p;
-
 private:
+    //all properties can be accessed via public functions
+    PWidgetProperties_t & p;
     PWidget(const PWidget & other);
 
 public:
@@ -103,8 +102,10 @@ public:
     inline bool visible() const {return p.flags.b.Visible;}
     inline bool enabled() const {return p.flags.b.Enable;}
     inline bool dragable() const {return p.flags.b.Dragable;}
-    inline PFont * font() const {return p.font;}
+    //return delegated font up to parentscreen
+    PFont * font() const;
     inline const char * text() const {return p.text;}
+    inline bool IsReadOnly() const {return p.flags.b.ReadOnly;}
     virtual size_t dataSize() const;
     bool hasFocus() const;
 
@@ -126,16 +127,26 @@ public:
     friend class PScreen;
 };
 
+typedef enum
+{
+  enable = 0x01,
+  visible = 0x02,
+  dragable = 0x04,
+  readonly = 0x08,
+  container = 0x10
+} propertyFlags;
+
 }
 
+//container, enabled
+#define DECL_WIDGET_PROPERTIES(name,x,y,w,h,Color) \
+    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,NULL,piris::INVALID,Color,NULL, piris::container  | piris::enable )
 
-#define DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable) \
-    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable,0,1,1)
-
-#define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,enable,dragable,visible,readonly) \
+//visible | readonly automatically
+#define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
     piris::PWidget::PWidgetProperties_t name =  \
     { \
-    backgroundColor,x,y,w,h,font,textColor,text, {enable,visible,dragable,readonly} \
+    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly \
     }
 
 

@@ -25,12 +25,12 @@ PButton::PButton(PWidgetProperties_t &props, PWidget *par):
 
 void PButton::draw(PPortingAbstract *disp) const
 {
-    passert(p.font,"font must not be NULL");
-
+    PFont * f = font();
+    passert(f,"font must not be NULL");
     char len = strlen(text());
-    int temp  = (p.font->width() * len) / 2;
+    int temp  = (f->width() * len) / 2;
     pixel_t xx = xLocal() - temp + width() / 2;
-    pixel_t yy = yLocal() + height() / 2 + p.font->height()/ 2;
+    pixel_t yy = yLocal() + height() / 2 + f->height()/ 2;
 
     if (!pressed)
     {
@@ -50,7 +50,7 @@ void PButton::draw(PPortingAbstract *disp) const
         disp->putRectangleEmpty(x(),x()+width(),y(),y()+height(),parentScreen()->focusColor());
            disp->putRectangleEmpty(x()+1,x()+width()-1,y()+1,y()-1+height(),parentScreen()->focusColor());
     }
-    disp->putText(text(),xx,yy,*p.font,textColor());
+    disp->putText(text(),xx,yy,*f,textColor());
 }
 
 

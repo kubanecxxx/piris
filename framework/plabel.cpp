@@ -14,26 +14,25 @@ PLabel::PLabel(const PWidgetProperties_t &props, PWidget *par):
 PLabel::PLabel(PWidget *par):
     PWidget(par)
 {
-    wea();
-    p.flags.b.Enable = 0;
+    setEnabled(false);
 }
 
 PLabel::PLabel(PWidgetProperties_t &props, PWidget *par):
     PWidget(props,par)
 {
-    wea();
-    p.flags.b.Enable = 0;
+    setEnabled(false);
 }
 
 void PLabel::recompute()
 {
-    wea();
-    p.w = font()->width() * strlen(p.text);
-    p.h = font()->height();
+    passert(font(),"font is NULL");
+    setWidth(font()->width()*strlen(text()));
+    setHeight(font()->height());
 }
 
 void PLabel::draw(PPortingAbstract *disp) const
 {
+    passert(font(),"font is NULL");
     PWidget::draw(disp);
     disp->putText(text(),x(),y()+height(),*font(),textColor());
 }

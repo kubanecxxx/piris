@@ -13,6 +13,7 @@ PWidget::PWidget(PWidgetProperties_t &prop, PWidget *par):
     p(prop)
 {
     p.flags.b.ReadOnly = 0;
+    p.flags.b.IsContainer = 1;
     construct(par);
 }
 
@@ -30,11 +31,13 @@ PWidget::PWidget(PWidget * par):
     p.w = 20;
     p.h = 20;
     p.textColor = BLACK;
+    //auto delegating up to screen font
     p.font = NULL;
     p.text = NULL;
     p.backgroundColor = RED;
     p.flags.w = 0;
     p.flags.b.ReadOnly = 0;
+    p.flags.b.IsContainer = 1;
     setVisible(true);
     setEnabled(true);
 
@@ -55,6 +58,7 @@ void PWidget::construct(PWidget *par)
 
 void PWidget::draw(PPortingAbstract *disp) const
 {
+    passert(parScreen, "no parent screen yet");
     if (!visible())
         return;
 
@@ -70,11 +74,27 @@ void PWidget::draw(PPortingAbstract *disp) const
     x += p.x; y += p.y;
     w += p.w; h += p.h;
 
+
+    //delegate color from parent widget or screen
     PColor tmp = p.backgroundColor;
     if (!tmp.isValid())
-        tmp = parentScreen()->color();
+    {
+        //delegate up to screen
+        PWidget * wid = parent();
+        while(wid)
+        {
+            if (wid->color().isValid())
+            {
+                tmp = wid->color();
+                break;
+            }
+        }
+        //no widget has valid color take color from screen
+        if (!tmp.isValid())
+            tmp = parentScreen()->color();
+    }
 
-    disp->putRectangle(x,x+w,y,y+h, p.backgroundColor);
+    disp->putRectangle(x,x+w,y,y+h, tmp);
 
     //draw all children
     PWidget * temp = child;
@@ -124,6 +144,7 @@ pixel_t PWidget::yLocal() const
 
 void PWidget::AddChild(PWidget *child)
 {
+    passert(p.flags.b.IsContainer == 0, "I am not a container");
     passert(child, "there is no child");
     passert(parScreen, "no parent screen yet");
 
@@ -322,6 +343,24 @@ size_t PWidget::dataSize() const
     }
 
     return size;
+}
+
+PFont * PWidget::font() const
+{
+    if (p.font)
+        return p.font;
+
+    //delegate up to screen
+    PWidget * wid = parent();
+    while(wid)
+    {
+        if (wid->font())
+        {
+            return wid->font();
+        }
+    }
+    //no widget has valid font so take font from screen
+    return  parentScreen()->font();
 }
 
 }

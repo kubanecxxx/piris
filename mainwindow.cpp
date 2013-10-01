@@ -13,10 +13,16 @@
 #include <QDebug>
 #include "plabel.h"
 
+const DECL_FONT(fontProps,NULL,5,8);
+piris::PFont fonty(fontProps);
+const DECL_LABEL_PROPERTIES(label,20,250,"label",piris::BLACK,piris::INVALID,NULL,fontProps);
+const DECL_WIDGET_PROPERTIES(widget1,40,40,100,100,piris::GREEN);
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     qDebugPrint::edit = ui->textBrowser;
 
@@ -33,19 +39,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->display->setMinimumSize(200,300);
 
+    /*
+     **********************************************
+     */
+
     mast = new piris::PMaster(port);
 
     piris::PScreen * wid;
     wid = new piris::PScreen(mast);
     wid->name = "screen1";
+    wid->setFont(&fonty);
     int i;
 
-    piris::PWidget * temp = new piris::PWidget();
-    temp->setColor(piris::GREEN);
-    temp->setX(40);
-    temp->setY(40);
-    temp->setWidth(100);
-    temp->setHeight(100);
+    piris::PWidget * temp = new piris::PWidget(widget1);
     temp->name = ("widget 1");
     wid->addChild(temp);
 
@@ -61,12 +67,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
      temp->setFocus();
 
-    piris::PFont * font = new piris::PFont(NULL,8,6);
 
 
     temp = new piris::PButton();
     temp->setColor(piris::WHITE);
-    temp->setFont(font);
+    //temp->setFont(NULL);
     temp->setX(20);
     temp->setY(200);
     temp->setWidth(100);
@@ -77,15 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     wid->addChild(temp);
 
-    temp = new piris::PLabel();
-    //temp->setColor(piris::WHITE);
-    temp->setFont(font);
-    temp->setX(20);
-    temp->setY(250);
-    temp->name = ("label");
-    temp->setText("label");
-    temp->setTextColor(piris::BLACK);
-    ((piris::PLabel*)temp)->recompute();
+    temp = new piris::PLabel(label);
 
     wid->addChild(temp);
 
@@ -98,8 +95,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->spinMemory->setValue(wid->dataSize());
-
-    //DECL_WIDGET_PROPERTIES(moje,10,20,100,100,"text",piris::BLACK,piris::WHITE,NULL,1);
 
     //temp = new piris::PWidget(coje);
     //temp->setX(50);
