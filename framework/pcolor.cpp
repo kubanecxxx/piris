@@ -10,7 +10,7 @@ PColor::PColor()
 
 PColor::PColor(uint16_t r, uint16_t g, uint16_t b)
 {
-    set(r,g,b);
+    set(r>>3,g>>2,b>>3);
 }
 
 PColor::PColor(globalColors_t col)

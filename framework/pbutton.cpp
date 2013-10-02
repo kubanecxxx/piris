@@ -42,22 +42,20 @@ void PButton::draw(PPortingAbstract *disp) const
 
     PColor farba = color();
     if (pressed)
-        farba = color().dark(7,8);
+        farba = color().dark(6,8);
 
-    disp->putRectangle(xGlobal(),xGlobal()+width(),yGlobal(),yGlobal()+height(),farba);
-
-    int i = y();
-    int j = yGlobal();
-
+    pixel_t xg = xGlobal();
+    pixel_t yg = yGlobal();
+    disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),farba,true);
 
     if (!hasFocus())
     {
-        disp->putRectangleEmpty(x(),x()+width(),y(),y()+height(),textColor());
+        disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),textColor());
     }
     else
     {
-        disp->putRectangleEmpty(x(),x()+width(),y(),y()+height(),parentScreen()->focusColor());
-           disp->putRectangleEmpty(x()+1,x()+width()-1,y()+1,y()-1+height(),parentScreen()->focusColor());
+        disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),parentScreen()->focusColor());
+           disp->putRectangleShaped(xg+1,xg+width()-1,yg+1,yg-1+height(),parentScreen()->focusColor());
     }
     disp->putText(text(),xx,yy,*f,textColor());
 }

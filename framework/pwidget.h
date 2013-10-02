@@ -26,9 +26,11 @@ public:
 
     typedef struct
     {
+        /// if background color is invalid then the color is delegated from parent widget up to screen
         PColor backgroundColor;
         pixel_t x,y;
         pixel_t w,h;
+        /// if NULL then delegated up to parent screen
         PFont * font;
         PColor textColor;
         const char * text;

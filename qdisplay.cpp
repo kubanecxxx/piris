@@ -94,13 +94,16 @@ void QDisplay::putLine(int x1, int x2, int y1, int y2, QColor color)
     repaint();
 }
 
-void QDisplay::putRect(int x1, int x2, int y1, int y2, QColor color)
+void QDisplay::putRect(int x1, int x2, int y1, int y2, QColor color,bool filled)
 {
     QPainter p;
     p.begin(image);
     p.setPen(color);
     QFont font;
-    p.fillRect(x1,y1,x2-x1,y2-y1,color);
+    if (filled)
+        p.fillRect(x1,y1,x2-x1,y2-y1,color);
+    else
+        p.drawRect(x1,y1,x2-x1,y2-y1);
 
 
     repaint();

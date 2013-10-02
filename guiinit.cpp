@@ -23,6 +23,8 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
 
     piris::PScreen * wid;
     wid = new piris::PScreen(mast);
+    wid->setColor(piris::PColor(235,234,233));
+    wid->setFocusColor(piris::GREEN);
     wid->name = "screen1";
     wid->setFont(&fonty);
     int i;
@@ -51,19 +53,17 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
     temp->setHeight(10);
     temp->name = "subwidget";
     t->AddChild(temp);
-
-
-
-
+    temp->setFocus();
 
     //button
     temp = new piris::PButton(button);
     temp->name = ("widget 3");
     wid->addChild(temp);
-    temp->setFocus();
+
 
     //label
     temp = new piris::PLabel(label);
+    temp->name = "label";
 
     wid->addChild(temp);
 

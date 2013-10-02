@@ -42,7 +42,7 @@ void PLabel::processEvent(PKeyEvent *, PTouchEvent *)
 
 }
 
-bool PLabel::eventForMe(PKeyEvent *, PTouchEvent *) const
+bool PLabel::eventForMe(const PKeyEvent *,const PTouchEvent *) const
 {
     return false;
 }

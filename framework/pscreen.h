@@ -52,7 +52,7 @@ public:
 
     //setters
     inline void setColor(PColor color) {m.color = color;}
-    inline void setFocusColor(PColor color) {m.color = color;}
+    inline void setFocusColor(PColor color) {m.focusColor = color;}
     inline void setFont(PFont * font) {m.font = font;}
     void setFocusWidget(PWidget * widget);
     size_t dataSize() const;

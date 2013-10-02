@@ -90,7 +90,7 @@ void PWidget::draw(PPortingAbstract *disp) const
             tmp = parentScreen()->color();
     }
 
-    disp->putRectangle(x,x+w,y,y+h, tmp);
+    disp->putRectangle(x,x+w,y,y+h, tmp,true);
 
     //draw all children
     PWidget * temp = child;
@@ -103,8 +103,8 @@ void PWidget::draw(PPortingAbstract *disp) const
 
     if (hasFocus())
     {
-        disp->putRectangleEmpty(x,x+w,y,y+w,parentScreen()->focusColor());
-        disp->putRectangleEmpty(x+1,x+w-1,y+1,y+h-1,parentScreen()->focusColor());
+        disp->putRectangle(x,x+w,y,y+w,parentScreen()->focusColor());
+        disp->putRectangle(x+1,x+w-1,y+1,y+h-1,parentScreen()->focusColor());
     }
 }
 

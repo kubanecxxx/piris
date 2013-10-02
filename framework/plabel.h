@@ -20,7 +20,7 @@ protected:
 
     void draw(PPortingAbstract *disp) const;
     void processEvent(PKeyEvent *key, PTouchEvent *touch);
-    bool eventForMe(PKeyEvent *key, PTouchEvent *touch) const;
+    bool eventForMe(const PKeyEvent *key,const PTouchEvent *touch) const;
 };
 
 //static widget properties initializer for label

@@ -95,9 +95,9 @@ void porting::putPixel(pixel_t x, pixel_t y, PColor color)
     disp->putPixel(x,y,color.get());
 }
 
-void porting::putRectangle(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColor color)
+void porting::putRectangle(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColor color, bool filled)
 {
-    disp->putRect(x1,x2,y1,y2,color.get());
+    disp->putRect(x1,x2,y1,y2,color.get(),filled);
 }
 
 void porting::putText(const char *text, pixel_t x, pixel_t y, const PFont & font, PColor color)
@@ -107,7 +107,7 @@ void porting::putText(const char *text, pixel_t x, pixel_t y, const PFont & font
 
 void porting::fill(PColor color)
 {
-    disp->putRect(0,disp->width(),0,disp->height(),color.get());
+    disp->putRect(0,disp->width(),0,disp->height(),color.get(),true);
 }
 
 bool porting::readKeyEvent(PKeyEvent *evt)
