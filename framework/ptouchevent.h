@@ -22,16 +22,11 @@ public:
     pixel_t x;
     pixel_t y;
 
-    pixel_t xRelative;
-    pixel_t yRelative;
-
     void operator=(const PTouchEvent & other)
     {
         x = other.x;
         y = other.y;
         event = other.event;
-        yRelative = other.yRelative;
-        xRelative = other.xRelative;
     }
 
     bool operator==(const PTouchEvent & other)

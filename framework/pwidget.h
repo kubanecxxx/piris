@@ -42,6 +42,7 @@ public:
                 uint8_t Dragable :1;
                 uint8_t ReadOnly :1;
                 uint8_t IsContainer: 1;
+                uint8_t Selectable :1;
             } b;
         } flags;
 
@@ -62,7 +63,7 @@ public:
 protected:
     //virtuální metody s událostma
     virtual void draw(PPortingAbstract * disp) const;
-    virtual bool eventForMe(PKeyEvent * key, PTouchEvent * touch) const;
+    virtual bool eventForMe(const PKeyEvent * key, const PTouchEvent * touch) const;
     virtual void processEvent(PKeyEvent * key, PTouchEvent * touch);
     void standardNextPrev(const PKeyEvent * key);
 
@@ -88,8 +89,8 @@ private:
 public:
     //getters
     inline pixel_t x() const {return p.x;}
-    pixel_t xLocal() const ;
-    pixel_t yLocal() const ;
+    pixel_t xGlobal() const ;
+    pixel_t yGlobal() const ;
     inline pixel_t y() const {return p.y;}
     inline pixel_t width() const {return p.w;}
     inline pixel_t height() const {return p.h;}
@@ -103,10 +104,12 @@ public:
     inline bool visible() const {return p.flags.b.Visible;}
     inline bool enabled() const {return p.flags.b.Enable;}
     inline bool dragable() const {return p.flags.b.Dragable;}
+    inline bool selectable() const {return p.flags.b.Selectable;}
     //return delegated font up to parentscreen
     PFont * font() const;
     inline const char * text() const {return p.text;}
     inline bool IsReadOnly() const {return p.flags.b.ReadOnly;}
+    inline bool IsContainer() const {return p.flags.b.IsContainer;}
     virtual size_t dataSize() const;
     bool hasFocus() const;
 
@@ -122,6 +125,7 @@ public:
     inline void setFont(PFont * font) {wea();p.font = font;}
     inline void setText(const char * text) {wea();p.text = text;}
     inline void setTextColor(PColor col) {wea();p.textColor = col;}
+    inline void setSelectable(bool selectable) {wea(); p.flags.b.Selectable = selectable;}
     void setFocus();
 
     void AddChild(PWidget * child);
@@ -134,20 +138,21 @@ typedef enum
   visible = 0x02,
   dragable = 0x04,
   readonly = 0x08,
-  container = 0x10
+  container = 0x10,
+  selectable = 0x20
 } propertyFlags;
 
 }
 
 //container, enabled
 #define DECL_WIDGET_PROPERTIES(name,x,y,w,h,Color) \
-    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,NULL,piris::INVALID,Color,NULL, piris::container  | piris::enable )
+    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,NULL,piris::INVALID,Color,NULL, piris::container  | piris::selectable )
 
 //visible | readonly automatically
 #define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
     piris::PWidget::PWidgetProperties_t name =  \
     { \
-    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly \
+    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly | piris::enable\
     }
 
 

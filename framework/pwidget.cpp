@@ -37,6 +37,7 @@ PWidget::PWidget(PWidget * par):
     p.backgroundColor = RED;
     p.flags.w = 0;
     p.flags.b.ReadOnly = 0;
+    p.flags.b.Selectable = 1;
     p.flags.b.IsContainer = 1;
     setVisible(true);
     setEnabled(true);
@@ -65,14 +66,9 @@ void PWidget::draw(PPortingAbstract *disp) const
     //draw root widget first
     pixel_t w=0,h=0,x=0,y=0;
 
-    if (paren)
-    {
-        w = x = paren->x();
-        h = y = paren->y();
-    }
 
-    x += p.x; y += p.y;
-    w += p.w; h += p.h;
+    x = xGlobal(); y = yGlobal();
+    w = p.w; h = p.h;
 
 
     //delegate color from parent widget or screen
@@ -112,7 +108,7 @@ void PWidget::draw(PPortingAbstract *disp) const
     }
 }
 
-pixel_t PWidget::xLocal() const
+pixel_t PWidget::xGlobal() const
 {
     pixel_t x=0;
 
@@ -126,7 +122,7 @@ pixel_t PWidget::xLocal() const
     return x;
 }
 
-pixel_t PWidget::yLocal() const
+pixel_t PWidget::yGlobal() const
 {
 
     pixel_t y=0;
@@ -144,7 +140,7 @@ pixel_t PWidget::yLocal() const
 
 void PWidget::AddChild(PWidget *child)
 {
-    passert(p.flags.b.IsContainer == 0, "I am not a container");
+    passert(IsContainer(), "I am not a container");
     passert(child, "there is no child");
     passert(parScreen, "no parent screen yet");
 
@@ -207,8 +203,6 @@ bool PWidget::sendEvent(PKeyEvent *key, PTouchEvent *touch)
 
     while(t)
     {
-        touch->xRelative = x() + touch->xRelative;
-        touch->yRelative = y() + touch->yRelative;
         bool ok;
         ok = t->sendEvent(key,touch);
         if (ok)
@@ -229,7 +223,7 @@ bool PWidget::sendEvent(PKeyEvent *key, PTouchEvent *touch)
  * @param touch
  * @return true pokud ho vzal
  */
-bool PWidget::eventForMe(PKeyEvent *key, PTouchEvent *touch) const
+bool PWidget::eventForMe(const PKeyEvent *key,const PTouchEvent *touch) const
 {
     //if not for me return false
 
@@ -240,12 +234,15 @@ bool PWidget::eventForMe(PKeyEvent *key, PTouchEvent *touch) const
         return true;
     }
 
+    pixel_t x = xGlobal();
+    pixel_t y = yGlobal();
+
     //touch event
-    if (touch->event && touch->xRelative >= x() && touch->xRelative <= x() + width() &&
-            touch->yRelative >= y() && touch->yRelative <= y() + height())
+    if (touch->event && touch->x >= x && touch->x <= x + width() &&
+            touch->y >= y && touch->y <= y + height())
     {
-        qlog(QString("%1: touch %2;%3 ; %4").arg(name).arg(touch->xRelative).
-             arg(touch->yRelative).arg(touch->event));
+        qlog(QString("%1: touch %2;%3 ; %4").arg(name).arg(touch->x).
+             arg(touch->y).arg(touch->event));
 
         return true;
     }
@@ -272,7 +269,6 @@ void PWidget::processEvent(PKeyEvent *key,  PTouchEvent *touch)
         touch->unlock();
         qlog(QString("%1 dropped").arg(name));
     }
-
 }
 
 PWidget * PWidget::prevSibling() const
@@ -358,13 +354,13 @@ void PWidget::standardNextPrev(const PKeyEvent * key)
         if (key->key == kUP)
         {
            p = prevSibling();
-           while(p != NULL && !(p->visible() && p->enabled()))
+           while(p != NULL && !(p->visible() && p->selectable() && p->enabled()))
                p = p->prevSibling();
         }
         if (key->key == kDOWN)
         {
             p = nextSibling();
-            while(p != NULL &&!(p->visible() && p->enabled()))
+            while(p != NULL &&!(p->visible() && p->selectable() && p->enabled()))
                 p = p->nextSibling();
         }
 

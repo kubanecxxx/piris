@@ -46,8 +46,8 @@ void PMaster::main()
     {
         if (!(tmp == *key) || !(tch == *touch))
         {
-            tch.xRelative = tch.x;
-            tch.yRelative = tch.y;
+            //tch.xRelative = tch.x;
+            //tch.yRelative = tch.y;
             *key = tmp;
             *touch = tch;
             activeScreen->sendEvent(touch, &tmp);

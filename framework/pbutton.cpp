@@ -37,17 +37,18 @@ void PButton::draw(PPortingAbstract *disp) const
     passert(f,"font must not be NULL");
     char len = strlen(text());
     int temp  = (f->width() * len) / 2;
-    pixel_t xx = xLocal() - temp + width() / 2;
-    pixel_t yy = yLocal() + height() / 2 + f->height()/ 2;
+    pixel_t xx = xGlobal() - temp + width() / 2;
+    pixel_t yy = yGlobal() + height() / 2 + f->height()/ 2;
 
-    if (!pressed)
-    {
-        disp->putRectangle(xLocal(),xLocal()+width(),yLocal(),yLocal()+height(),color());
-    }
-    else
-    {
-        disp->putRectangle(xLocal(),xLocal()+width(),yLocal(),yLocal()+height(),color().dark(7,8));
-    }
+    PColor farba = color();
+    if (pressed)
+        farba = color().dark(7,8);
+
+    disp->putRectangle(xGlobal(),xGlobal()+width(),yGlobal(),yGlobal()+height(),farba);
+
+    int i = y();
+    int j = yGlobal();
+
 
     if (!hasFocus())
     {

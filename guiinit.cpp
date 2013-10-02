@@ -10,11 +10,11 @@
 #include <QDebug>
 #include "plabel.h"
 
-const DECL_FONT(fontProps,NULL,6,8);
+static const DECL_FONT(fontProps,NULL,6,8);
 piris::PFont fonty(fontProps);
-const DECL_LABEL_PROPERTIES(label,20,250,"labelproste",piris::BLACK,piris::GREEN,NULL,fontProps);
-const DECL_WIDGET_PROPERTIES(widget1,40,40,100,100,piris::GREEN);
-const DECL_BUTTON_PROPERTIES(button,20,200,100,30,"tlacitko",piris::BLACK,piris::WHITE,NULL);
+static const DECL_LABEL_PROPERTIES(label,20,250,"labelproste",piris::BLACK,piris::GREEN,NULL,fontProps);
+static const DECL_WIDGET_PROPERTIES(widget1,20,20,80,80,piris::GREEN);
+static const DECL_BUTTON_PROPERTIES(button,20,200,100,30,"tlacitko",piris::BLACK,piris::WHITE,NULL);
 
 piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
 {
@@ -41,15 +41,26 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
     i = temp->dataSize();
     wid->addChild(temp);
 
-    temp->setFocus();
+    piris::PWidget * t = temp;
+
+    temp = new piris::PWidget();
+    temp->setColor(piris::RED);
+    temp->setX(30);
+    temp->setY(30);
+    temp->setWidth(10);
+    temp->setHeight(10);
+    temp->name = "subwidget";
+    t->AddChild(temp);
+
+
 
 
 
     //button
     temp = new piris::PButton(button);
     temp->name = ("widget 3");
-
     wid->addChild(temp);
+    temp->setFocus();
 
     //label
     temp = new piris::PLabel(label);

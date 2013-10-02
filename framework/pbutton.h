@@ -27,7 +27,7 @@ private:
 };
 
 #define DECL_BUTTON_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font) \
-    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,piris::enable)
+    _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font,piris::selectable)
 
 }
 
