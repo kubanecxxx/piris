@@ -26,6 +26,10 @@ void PScreen::draw(PPortingAbstract *port)
         t->draw(port);
         t = t->nextSibling();
     }
+
+    //focused widget draw last
+    if (focusWidget())
+        focusWidget()->draw(port);
 }
 
 void  PScreen::sendEvent(PTouchEvent *touch, PKeyEvent *key)
@@ -36,6 +40,10 @@ void  PScreen::sendEvent(PTouchEvent *touch, PKeyEvent *key)
         wid->processEvent(key,touch);
         return;
     }
+
+    //focused widget ask first
+    if (focusWidget() && focusWidget()->sendEvent(key,touch))
+        return;
 
     PWidget * t = child;
     while(t)
