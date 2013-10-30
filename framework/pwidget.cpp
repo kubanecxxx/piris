@@ -5,6 +5,8 @@
 #include "ptouchevent.h"
 #include "pmaster.h"
 #include "pscreen.h"
+#include <strings.h>
+#include "pfont.h"
 
 namespace piris
 {
@@ -41,6 +43,7 @@ PWidget::PWidget(PWidget * par):
     p.flags.b.IsContainer = 1;
     setVisible(true);
     setEnabled(true);
+    setText("text");
 
     construct(par);
 }
@@ -72,24 +75,7 @@ void PWidget::draw(PPortingAbstract *disp) const
 
 
     //delegate color from parent widget or screen
-    PColor tmp = p.backgroundColor;
-    if (!tmp.isValid())
-    {
-        //delegate up to screen
-        PWidget * wid = parent();
-        while(wid)
-        {
-            if (wid->color().isValid())
-            {
-                tmp = wid->color();
-                break;
-            }
-        }
-        //no widget has valid color take color from screen
-        if (!tmp.isValid())
-            tmp = parentScreen()->color();
-    }
-
+    PColor tmp = backgroundColorDelegated();
     disp->putRectangle(x,x+w,y,y+h, tmp,true);
 
     //draw all children
@@ -103,7 +89,7 @@ void PWidget::draw(PPortingAbstract *disp) const
 
     if (hasFocus())
     {
-        disp->putRectangle(x,x+w,y,y+w,parentScreen()->focusColor());
+        disp->putRectangle(x,x+w,y,y+h,parentScreen()->focusColor());
         disp->putRectangle(x+1,x+w-1,y+1,y+h-1,parentScreen()->focusColor());
     }
 }
@@ -323,24 +309,6 @@ size_t PWidget::dataSize() const
     return size;
 }
 
-PFont * PWidget::font() const
-{
-    if (p.font)
-        return p.font;
-
-    //delegate up to screen
-    PWidget * wid = parent();
-    while(wid)
-    {
-        if (wid->font())
-        {
-            return wid->font();
-        }
-    }
-    //no widget has valid font so take font from screen
-    return  parentScreen()->font();
-}
-
 /**
  * @brief PWidget::standardNextPrev
  * standard selecting previous/next widget by up/down key
@@ -367,6 +335,73 @@ void PWidget::standardNextPrev(const PKeyEvent * key)
         if (p)
             p->setFocus();
     }
+}
+
+/**
+ * @brief PWidget::fontDelegated
+ * @return return delegated font up to screen
+ */
+PFont * PWidget::fontDelegated() const
+{
+    if (p.font)
+        return p.font;
+
+    //delegate up to screen
+    PWidget * wid = parent();
+    while(wid)
+    {
+        if (wid->font())
+        {
+            return wid->font();
+        }
+        wid = wid->parent();
+    }
+    //no widget has valid font so take font from screen
+    passert(parentScreen(),"screen is null");
+
+    return  parentScreen()->font();
+}
+
+PColor PWidget::textColorDelegated() const
+{
+    if (textColor().isValid())
+        return textColor();
+
+    //delegate up to screen
+    PWidget * wid = parent();
+    while(wid)
+    {
+        if (wid->textColor().isValid())
+        {
+            return wid->textColor();
+        }
+        wid = wid->parent();
+    }
+
+    //no widget has valid font so take font from screen
+    passert(parentScreen(),"screen is null");
+    return  parentScreen()->textColor();
+}
+
+PColor PWidget::backgroundColorDelegated() const
+{
+    if (color().isValid())
+        return color();
+
+    //delegate up to screen
+    PWidget * wid = parent();
+    while(wid)
+    {
+        if (wid->color().isValid())
+        {
+            return wid->color();
+        }
+        wid = wid->parent();
+    }
+
+    //no widget has valid font so take font from screen
+    passert(parentScreen(),"screen is null");
+    return  parentScreen()->color();
 }
 
 }

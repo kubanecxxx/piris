@@ -23,18 +23,12 @@ PLabel::PLabel(PWidgetProperties_t &props, PWidget *par):
     setEnabled(false);
 }
 
-void PLabel::recompute()
-{
-    passert(font(),"font is NULL");
-    setWidth(font()->width()*strlen(text()));
-    setHeight(font()->height());
-}
-
 void PLabel::draw(PPortingAbstract *disp) const
 {
-    passert(font(),"font is NULL");
+    PFont * f = fontDelegated();
+    passert(f,"font is NULL");
     PWidget::draw(disp);
-    disp->putText(text(),x(),y()+height(),*font(),textColor());
+    disp->putText(text(),x(),y()+height(),*f,textColorDelegated());
 }
 
 void PLabel::processEvent(PKeyEvent *, PTouchEvent *)
@@ -46,5 +40,19 @@ bool PLabel::eventForMe(const PKeyEvent *,const PTouchEvent *) const
 {
     return false;
 }
+
+/**
+ * @brief PLabel::recomputeGeometry
+ * method recompute widget geometry according to its text size and length
+ * useable for labels checkboxes...
+ */
+void PLabel::recomputeGeometry()
+{
+    PFont * f = fontDelegated();
+    passert(f,"font is NULL");
+    setWidth(f->width()*strlen(text()));
+    setHeight(f->height());
+}
+
 
 }

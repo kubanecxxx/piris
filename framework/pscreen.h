@@ -31,6 +31,7 @@ private:
     struct m
     {
        PColor color;
+       PColor textColor;
        PColor focusColor;
        PFont * font;
     } m;
@@ -45,6 +46,7 @@ public:
     //getters
     inline PMaster * parent() const {return p;}
     inline PColor color() const {return m.color;}
+    inline PColor textColor() const {return m.textColor;}
     inline PWidget * focusWidget() const {return focWidget;}
     inline PWidget * firstChild() const {return child;}
     inline PColor focusColor() const {return m.focusColor;}
@@ -54,6 +56,7 @@ public:
     inline void setColor(PColor color) {m.color = color;}
     inline void setFocusColor(PColor color) {m.focusColor = color;}
     inline void setFont(PFont * font) {m.font = font;}
+    inline void setTextColor(PColor color) {m.textColor = color;}
     void setFocusWidget(PWidget * widget);
     size_t dataSize() const;
 

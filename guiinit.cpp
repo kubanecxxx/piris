@@ -9,6 +9,7 @@
 #include "pfont.h"
 #include <QDebug>
 #include "plabel.h"
+#include "pcheckbox.h"
 
 static const DECL_FONT(fontProps,NULL,6,8);
 piris::PFont fonty(fontProps);
@@ -70,6 +71,17 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
     i = temp->dataSize();
 
 
+
+    //checkbox
+    piris::PCheckBox * box = new piris::PCheckBox;
+    box->name = "checkbox";
+    box->setX(10);
+    box->setY(230);
+    box->setColor(piris::INVALID);
+    box->setTextColor(piris::INVALID);
+
+    wid->addChild(box);
+    box->recomputeGeometry();
 
 
     wid->makeActive();

@@ -96,8 +96,11 @@ public:
     inline pixel_t y() const {return p.y;}
     inline pixel_t width() const {return p.w;}
     inline pixel_t height() const {return p.h;}
+    /// background color
     inline PColor color() const {return p.backgroundColor;}
     inline PColor textColor() const {return p.textColor;}
+    PColor backgroundColorDelegated() const ;
+    PColor textColorDelegated() const ;
     inline PWidget * nextSibling() const {return next;}
     PWidget * prevSibling() const;
     inline PWidget * firstChild() const {return child;}
@@ -108,7 +111,8 @@ public:
     inline bool dragable() const {return p.flags.b.Dragable;}
     inline bool selectable() const {return p.flags.b.Selectable;}
     //return delegated font up to parentscreen
-    PFont * font() const;
+    PFont * font() const {return p.font;}
+    PFont * fontDelegated() const;
     inline const char * text() const {return p.text;}
     inline bool IsReadOnly() const {return p.flags.b.ReadOnly;}
     inline bool IsContainer() const {return p.flags.b.IsContainer;}
@@ -132,6 +136,7 @@ public:
 
     void AddChild(PWidget * child);
     friend class PScreen;
+
 };
 
 typedef enum

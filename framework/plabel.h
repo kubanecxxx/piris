@@ -13,8 +13,7 @@ public:
     PLabel(PWidgetProperties_t & props, PWidget *par = NULL);
     PLabel(const PWidgetProperties_t &props, PWidget *par = NULL);
 
-    //must be called after setText by user
-    void recompute();
+    void recomputeGeometry();
 
 protected:
 

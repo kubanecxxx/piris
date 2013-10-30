@@ -33,7 +33,7 @@ PButton::PButton(const PWidgetProperties_t &props, PWidget *par):
 
 void PButton::draw(PPortingAbstract *disp) const
 {
-    PFont * f = font();
+    PFont * f = fontDelegated();
     passert(f,"font must not be NULL");
     char len = strlen(text());
     int temp  = (f->width() * len) / 2;
