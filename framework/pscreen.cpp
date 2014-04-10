@@ -10,7 +10,11 @@ namespace piris
 
 PScreen::PScreen(PMaster *parent):
     p(parent),
-    child(NULL)
+    child(NULL),
+    focWidget(NULL)
+  #ifdef DRAWING_MODE_CHANGESONLY
+  , dirty(true)
+  #endif
 {
     m.color = RED;
     m.focusColor = m.color.invert();
@@ -18,8 +22,33 @@ PScreen::PScreen(PMaster *parent):
 
 void PScreen::draw(PPortingAbstract *port)
 {
-    port->fill(m.color);
+#ifdef DRAWING_MODE_CHANGESONLY
+    if (dirty)
+    {
+        port->fill(m.color);
+        dirty = false;
+    }
 
+    PWidget * t = child;
+    while(t)
+    {
+        if (t->dirty && t != focusWidget())
+        {
+            t->draw(port);
+            t->dirty = false;
+        }
+        t = t->nextSibling();
+    }
+
+    //focused widget draw last
+    if (focusWidget() && focusWidget()->dirty)
+    {
+        focusWidget()->draw(port);
+        focusWidget()->dirty = false;
+    }
+
+#else
+    port->fill(m.color);
     PWidget * t = child;
     while(t)
     {
@@ -30,6 +59,8 @@ void PScreen::draw(PPortingAbstract *port)
     //focused widget draw last
     if (focusWidget())
         focusWidget()->draw(port);
+
+#endif
 }
 
 void  PScreen::sendEvent(PTouchEvent *touch, PKeyEvent *key)
@@ -85,7 +116,7 @@ void PScreen::setFocusWidget(PWidget *widget)
 
 size_t PScreen::dataSize() const
 {
-    uint16_t temp = sizeof(this);
+    uint16_t temp = sizeof(*this);
 
 
     PWidget * t = child;

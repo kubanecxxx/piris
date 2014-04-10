@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     qdisplay.cpp \
-    guiinit.cpp
+    guiinit.cpp \
+
 
 
 HEADERS  += mainwindow.h \
     qdisplay.h \
+
 
 DEFINES += KDEBUG
 

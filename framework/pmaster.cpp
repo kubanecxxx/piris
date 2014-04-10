@@ -37,6 +37,8 @@ void PMaster::main()
     //až to jednou projde zavolá port->suspend
     //probrání si musi pořešit porting třeba přes nějaky přerušeni od tlačitek nebo od touche že má novy data
     //ještě je potřeba promyslet probrání při změně něčeho ne od usera ale přimo programem(hodiny..)
+
+    //hodit do preprocesoru
     printScreen();
 
     PTouchEvent tch;

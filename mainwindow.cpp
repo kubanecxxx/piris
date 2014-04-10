@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTimer * timer = new QTimer;
     connect(timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    timer->start(100);
+    timer->start(50);
 
     connect(ui->display,SIGNAL(mouseCoord(QPoint)),this,SLOT(mousePos(QPoint)));
 
@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //temp->setX(50);
 
     asm("nop");
+
+    mast->printScreen();
 }
 
 MainWindow::~MainWindow()

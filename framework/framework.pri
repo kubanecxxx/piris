@@ -14,8 +14,9 @@ HEADERS += pportingabstract.h \
     qdebugprint.h \
     pbutton.h \
     pfont.h \
-    framework/plabel.h \
-    framework/pcheckbox.h
+    plabel.h \
+    pcheckbox.h \
+    pspecialspinbox.h
 
 SOURCES += \
     pkeyevent.cpp \
@@ -29,5 +30,6 @@ SOURCES += \
     framework/pportingabstract.cpp \
     framework/pfont.cpp \
     framework/plabel.cpp \
-    framework/pcheckbox.cpp
+    framework/pcheckbox.cpp \
+    framework/pspecialspinbox.cpp
 

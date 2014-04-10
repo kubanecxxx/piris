@@ -55,6 +55,10 @@ void PWidget::construct(PWidget *par)
     child = NULL;
     parScreen = NULL;
 
+#ifdef DRAWING_MODE_CHANGESONLY
+    dirty = true;
+#endif
+
     //this widget will be automatically added as a parent child
     if (par)
         par->AddChild(this);
@@ -257,6 +261,42 @@ void PWidget::processEvent(PKeyEvent *key,  PTouchEvent *touch)
     }
 }
 
+PWidget * PWidget::nextSiblingCircle() const
+{
+    if (nextSibling())
+        return nextSibling();
+
+    if (paren)
+        return paren->firstChild();
+
+    passert(parScreen, "no parent screen");
+    return parScreen->firstChild();
+}
+
+PWidget * PWidget::prevSiblingCircle() const
+{
+    PWidget * p = prevSibling();
+    if (p)
+        return p;
+
+    PWidget * temp = 0;
+    if (paren)
+    {
+        temp = paren->firstChild();
+    }
+    else
+    {
+        passert(parScreen, "no parent screen");
+        temp = parentScreen()->firstChild();
+    }
+
+    while(temp->nextSibling())
+    {
+        temp = temp->nextSibling();
+    }
+    return temp;
+}
+
 PWidget * PWidget::prevSibling() const
 {
     PWidget * temp = 0;
@@ -317,23 +357,41 @@ size_t PWidget::dataSize() const
 void PWidget::standardNextPrev(const PKeyEvent * key)
 {
     PWidget * p = 0;
+    bool b = parentScreen()->inCircles();
+    typedef PWidget* (PWidget::*f)() const;
+    f fc = NULL;
+
     if (key->event == PRESSED)
     {
         if (key->key == kUP)
         {
-           p = prevSibling();
-           while(p != NULL && !(p->visible() && p->selectable() && p->enabled()))
-               p = p->prevSibling();
+            if (b)
+                fc = &PWidget::prevSiblingCircle;
+            else
+                fc = &PWidget::prevSibling;
         }
         if (key->key == kDOWN)
         {
-            p = nextSibling();
-            while(p != NULL &&!(p->visible() && p->selectable() && p->enabled()))
-                p = p->nextSibling();
+            if (b)
+                fc = &PWidget::nextSiblingCircle;
+            else
+                fc = &PWidget::nextSibling;
         }
+        if (!fc)
+            return;
+
+        p = (this->*fc)();
+        while(p != NULL && !(p->visible() && p->selectable() && p->enabled()))
+            p = (p->*fc)();
 
         if (p)
+        {
             p->setFocus();
+#ifdef DRAWING_MODE_CHANGESONLY
+            dirty = true;
+            p->dirty = true;
+#endif
+        }
     }
 }
 

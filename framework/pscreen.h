@@ -3,6 +3,7 @@
 
 #include "ptypes.h"
 #include "pcolor.h"
+#include "passert.h"
 
 namespace piris
 {
@@ -22,6 +23,10 @@ public:
     QString name;
 #endif
 
+#ifdef DRAWING_MODE_CHANGESONLY
+    bool dirty;
+#endif
+
 private:
     PScreen(const PScreen & other);
     PMaster * p;
@@ -34,6 +39,7 @@ private:
        PColor textColor;
        PColor focusColor;
        PFont * font;
+       bool selectInCircles;
     } m;
 
     void sendEvent(PTouchEvent * touch, PKeyEvent  * key);
@@ -51,12 +57,14 @@ public:
     inline PWidget * firstChild() const {return child;}
     inline PColor focusColor() const {return m.focusColor;}
     inline PFont * font() const {return m.font;}
+    inline bool inCircles() const {return m.selectInCircles;}
 
     //setters
     inline void setColor(PColor color) {m.color = color;}
     inline void setFocusColor(PColor color) {m.focusColor = color;}
     inline void setFont(PFont * font) {m.font = font;}
     inline void setTextColor(PColor color) {m.textColor = color;}
+    inline void setInCircles(bool enabled) {m.selectInCircles = enabled;}
     void setFocusWidget(PWidget * widget);
     size_t dataSize() const;
 

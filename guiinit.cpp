@@ -17,6 +17,8 @@ static const DECL_LABEL_PROPERTIES(label,20,250,"labelproste",piris::BLACK,piris
 static const DECL_WIDGET_PROPERTIES(widget1,20,20,80,80,piris::GREEN);
 static const DECL_BUTTON_PROPERTIES(button,20,200,100,30,"tlacitko",piris::BLACK,piris::WHITE,NULL);
 
+piris::PScreen * another_screen(piris::PPortingAbstract * port, int & size, piris::PMaster * mast);
+
 piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
 {
     piris::PMaster * mast;
@@ -87,6 +89,49 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
     wid->makeActive();
 
     size = i;
-    return mast;
 
+    int sze = 0;
+    piris::PScreen * screen2 = another_screen(port,sze,mast);
+
+    screen2->setFont(&fonty);
+    screen2->setColor(piris::BLACK);
+    screen2->setFocusColor(piris::BLUE);
+    screen2->name = "screen2";
+    screen2->makeActive();
+
+    size = sze;
+    return mast;
+}
+
+#include "pspecialspinbox.h"
+
+void cb(piris::PKeyEvent * evt, piris::PSpecialSpinBox * spin)
+{
+    qlog("cb jaja");
+}
+
+const char * p[4] =
+{
+    "nebudu", "  to  ", " delat", "  kua "
+};
+
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(spin1,20,50,"spin1",piris::WHITE,piris::INVALID,NULL,fontProps);
+const DECL_SPECIALSPINBOX_PROPERTIES(spin1_p, 0,3,1, cb, p,4, NULL,1,5,0);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(spin2,20,90,"spin2",piris::WHITE,piris::INVALID,NULL,fontProps);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(spin3,20,150,"spin3",piris::WHITE,piris::INVALID,NULL,fontProps);
+
+piris::PScreen * another_screen(piris::PPortingAbstract * port, int & size, piris::PMaster * m)
+{
+    piris::PScreen * screen = new piris::PScreen(m);
+    piris::PSpecialSpinBox * s1 = new piris::PSpecialSpinBox(spin1_p,spin1,screen);
+    s1->name = "spin1";
+    piris::PSpecialSpinBox * s2 = new piris::PSpecialSpinBox(spin1_p,spin2,screen);
+    s2->name = "spin2";
+    piris::PSpecialSpinBox * s3 = new piris::PSpecialSpinBox(spin1_p,spin3,screen);
+    s3->name = "spin3";
+
+    s1->setFocus();
+    size = screen->dataSize();
+
+    return screen;
 }

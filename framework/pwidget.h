@@ -24,6 +24,10 @@ class PWidget
 {
 public:
 
+#ifdef DRAWING_MODE_CHANGESONLY
+    bool dirty;
+#endif
+
     typedef struct
     {
         /// if background color is invalid then the color is delegated from parent widget up to screen
@@ -103,6 +107,8 @@ public:
     PColor textColorDelegated() const ;
     inline PWidget * nextSibling() const {return next;}
     PWidget * prevSibling() const;
+    PWidget * nextSiblingCircle() const;
+    PWidget * prevSiblingCircle() const;
     inline PWidget * firstChild() const {return child;}
     inline PWidget * parent() const {return paren;}
     inline PScreen * parentScreen() const {return parScreen;}
