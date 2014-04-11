@@ -76,10 +76,12 @@ void QDisplay::putText(int x, int y, const char *data, QColor col, int size)
     p.setPen(col);
     QFont font;
     font.setFamily("terminus");
+    font.setFixedPitch(true);
     font.setPixelSize(size);
     p.setFont(font);
     p.drawText(x,y,QString(data));
 
+    //p.drawLine(53,0,53,150);
     repaint();
 }
 

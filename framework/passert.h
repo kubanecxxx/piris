@@ -25,4 +25,7 @@
 #endif
 #endif
 
+#define writeenableassert() passert(IsReadOnly() == 0,"is readonly")
+#define wea() writeenableassert()
+
 #endif // PASSERT_H

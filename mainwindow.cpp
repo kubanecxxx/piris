@@ -23,8 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     qDebugPrint::edit = ui->textBrowser;
 
-    piris::PPortingAbstract * port;
-    port = new porting(ui->display);
+
 
     ui->display->setFocus();
 
@@ -34,7 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->display,SIGNAL(mouseCoord(QPoint)),this,SLOT(mousePos(QPoint)));
 
-    ui->display->setMinimumSize(200,300);
+    piris::PPortingAbstract * port;
+    port = new porting(ui->display);
+
+    //ui->display->setMinimumSize(200,300);
+    ui->display->setMinimumSize(128,160);
 
     /*
      **********************************************

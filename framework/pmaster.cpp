@@ -19,10 +19,20 @@ PMaster::PMaster(PPortingAbstract *port):
     touch = new PTouchEvent;
 }
 
+PMaster::PMaster(PKeyEvent *k, PTouchEvent *t):
+    hw(NULL),
+    activeScreen(NULL),
+    key(k),
+    touch(t)
+{
+
+}
+
 void PMaster::printScreen()
 {
-    if (activeScreen)
-        activeScreen->draw(hw);
+    passert(hw,"port has to exist");
+    passert(activeScreen, "no screen is active");
+    activeScreen->draw(hw);
 }
 
 void PMaster::setActiveScreen(PScreen *screen)
@@ -52,6 +62,7 @@ void PMaster::main()
             //tch.yRelative = tch.y;
             *key = tmp;
             *touch = tch;
+            passert(activeScreen, "no screen is active");
             activeScreen->sendEvent(touch, &tmp);
         }
     }

@@ -16,7 +16,8 @@ HEADERS += pportingabstract.h \
     pfont.h \
     plabel.h \
     pcheckbox.h \
-    pspecialspinbox.h
+    pspecialspinbox.h \
+    chsprintf.h
 
 SOURCES += \
     pkeyevent.cpp \
@@ -31,5 +32,6 @@ SOURCES += \
     framework/pfont.cpp \
     framework/plabel.cpp \
     framework/pcheckbox.cpp \
-    framework/pspecialspinbox.cpp
+    framework/pspecialspinbox.cpp \
+    framework/chsprintf.cpp
 

@@ -13,6 +13,7 @@ class PMaster
 {
 public:
     PMaster(PPortingAbstract * port);
+    PMaster(PKeyEvent * k, PTouchEvent * t);
 
 private:
     PPortingAbstract * hw;
@@ -26,6 +27,7 @@ public:
     void setActiveScreen(PScreen * screen);
     void printScreen();
     void main();
+    inline void setHW(PPortingAbstract * port) {hw = port;}
 
 };
 

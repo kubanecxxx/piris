@@ -9,29 +9,56 @@ namespace piris
 {
 
 PScreen::PScreen(PMaster *parent):
-    p(parent),
-    child(NULL),
-    focWidget(NULL)
-  #ifdef DRAWING_MODE_CHANGESONLY
-  , dirty(true)
-  #endif
+    m(*new screen_props_t)
 {
-    m.color = RED;
-    m.focusColor = m.color.invert();
+    construct(parent);
+    m.color = BLACK;
+    m.flags.w = 0;
+    m.font = NULL;
+    m.textColor = WHITE;
+    m.focusColor = textColor().invert().rawData();
+}
+
+PScreen::PScreen(const screen_props_t &props, PMaster *parent):
+    m((screen_props_t &)props)
+{
+    construct(parent);
+}
+
+PScreen::PScreen(screen_props_t &props, PMaster *parent):
+    m(props)
+{
+    m.flags.b.ReadOnly = false;
+    construct(parent);
+}
+
+void PScreen::construct(PMaster * parent)
+{
+    p = parent;
+    child = NULL;
+    focWidget = NULL;
+
+  #ifdef DRAWING_MODE_CHANGESONLY
+    dirty = true;
+  #endif
 }
 
 void PScreen::draw(PPortingAbstract *port)
 {
+    passert(port,"port is not defined");
+    passert(font(),"font is not defined");
+
 #ifdef DRAWING_MODE_CHANGESONLY
     if (dirty)
     {
         port->fill(m.color);
-        dirty = false;
     }
 
     PWidget * t = child;
     while(t)
     {
+        if (dirty)
+            t->dirty = true;
         if (t->dirty && t != focusWidget())
         {
             t->draw(port);
@@ -46,6 +73,7 @@ void PScreen::draw(PPortingAbstract *port)
         focusWidget()->draw(port);
         focusWidget()->dirty = false;
     }
+    dirty = false;
 
 #else
     port->fill(m.color);
@@ -117,6 +145,8 @@ void PScreen::setFocusWidget(PWidget *widget)
 size_t PScreen::dataSize() const
 {
     uint16_t temp = sizeof(*this);
+    if (!IsReadOnly())
+        temp += sizeof(screen_props_t);
 
 
     PWidget * t = child;

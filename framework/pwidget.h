@@ -8,8 +8,7 @@
 #endif
 
 #include "passert.h"
-#define writeenableassert() passert(IsReadOnly() == 0,"is readonly")
-#define wea() writeenableassert()
+
 
 namespace piris
 {
@@ -31,12 +30,14 @@ public:
     typedef struct
     {
         /// if background color is invalid then the color is delegated from parent widget up to screen
-        PColor backgroundColor;
+        /// cannot use PColor class because the implicit constructor would be called
+        /// which is not possible during buildtime initialization for saving RAM
+        color_t backgroundColor;
         pixel_t x,y;
         pixel_t w,h;
         /// if NULL then delegated up to parent screen
         PFont * font;
-        PColor textColor;
+        color_t textColor;
         const char * text;
         union
         {
@@ -101,8 +102,8 @@ public:
     inline pixel_t width() const {return p.w;}
     inline pixel_t height() const {return p.h;}
     /// background color
-    inline PColor color() const {return p.backgroundColor;}
-    inline PColor textColor() const {return p.textColor;}
+    PColor color() const {return PColor(static_cast<globalColors_t>(p.backgroundColor));}
+    PColor textColor() const {return PColor(static_cast<globalColors_t>(p.textColor));}
     PColor backgroundColorDelegated() const ;
     PColor textColorDelegated() const ;
     inline PWidget * nextSibling() const {return next;}
@@ -130,13 +131,13 @@ public:
     inline void setY(pixel_t y) {wea();p.y = y;}
     inline void setWidth(pixel_t width) {wea();p.w = width;}
     inline void setHeight(pixel_t height) {wea();p.h = height;}
-    inline void setColor(PColor col) {wea();p.backgroundColor = col;}
+    inline void setColor(PColor col) {wea();p.backgroundColor = col.rawData();}
     inline void setVisible(bool visible) {wea();p.flags.b.Visible = visible;}
     inline void setEnabled(bool enable) {wea();p.flags.b.Enable = enable;}
     inline void setDragable(bool dragable) {wea();p.flags.b.Dragable = dragable;}
     inline void setFont(PFont * font) {wea();p.font = font;}
     inline void setText(const char * text) {wea();p.text = text;}
-    inline void setTextColor(PColor col) {wea();p.textColor = col;}
+    inline void setTextColor(PColor col) {wea();p.textColor = col.rawData();}
     inline void setSelectable(bool selectable) {wea(); p.flags.b.Selectable = selectable;}
     void setFocus();
 
@@ -152,7 +153,7 @@ typedef enum
   dragable = 0x04,
   readonly = 0x08,
   container = 0x10,
-  selectable = 0x20
+  selectable = 0x20,
 } propertyFlags;
 
 }
@@ -163,10 +164,15 @@ typedef enum
 
 //visible | readonly automatically
 #define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
-    piris::PWidget::PWidgetProperties_t name =  \
+    piris::PWidget::PWidgetProperties_t name##_p =  \
     { \
     backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly | piris::enable\
     }
 
+#define _DECL_WIDGET_PROPERTIES_DISABLED(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
+    piris::PWidget::PWidgetProperties_t name##_p =  \
+    { \
+    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly \
+    }
 
 #endif // PWIDGET_H

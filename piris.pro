@@ -19,8 +19,12 @@ SOURCES += main.cpp\
 
 
 
+
 HEADERS  += mainwindow.h \
     qdisplay.h \
+    main_screen.h \
+    menu_screen.h
+
 
 
 DEFINES += KDEBUG

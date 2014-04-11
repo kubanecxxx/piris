@@ -13,16 +13,6 @@ PColor::PColor(uint16_t r, uint16_t g, uint16_t b)
     set(r>>3,g>>2,b>>3);
 }
 
-PColor::PColor(globalColors_t col)
-{
-    set(col);
-}
-
-void PColor::set(globalColors_t col)
-{
-    data = col;
-}
-
 void PColor::set(uint16_t r, uint16_t g, uint16_t b)
 {
     setB(b);

@@ -3,6 +3,7 @@
 #include "pportingabstract.h"
 #include "pkeyevent.h"
 #include "pfont.h"
+#include "chsprintf.h"
 
 namespace piris
 {
@@ -14,6 +15,9 @@ PSpecialSpinBox::PSpecialSpinBox(const specialspinbox_p &p, const PWidgetPropert
 {
     spinFlags.w = 0;
     setCirculation(true);
+    setToggleable(true);
+    //setShowValue(true);
+
 
     if (screen)
         screen->addChild(this);
@@ -53,6 +57,7 @@ void PSpecialSpinBox::draw(PPortingAbstract *disp) const
 
     char pole[16];
     const char * p;
+
     if (sp.text_table && sp.table_size > value)
         p = sp.text_table[value];
     else if(sp.formater)
@@ -66,8 +71,18 @@ void PSpecialSpinBox::draw(PPortingAbstract *disp) const
         p = pole;
     }
 
-    putItem(disp, p,x,y,tmp,tmp2);
+    if (hidden())
+    {
+        pixel_t w, h;
+        w = width(); h = height();
+        disp->putRectangle(x,x+w,y,y+h, backgroundColorDelegated(),true);
+        disp->putRectangle(x+w,x+w+strlen(p) * fontDelegated()->width(),y,y+h, backgroundColorDelegated(),true);
+        return;
+    }
 
+    putItem(disp, p,x,y,tmp,tmp2);
+    if (sp.sec)
+        putItem(disp,p,sp.sec->x,sp.sec->y,tmp,tmp2);
 
 }
 
@@ -83,8 +98,9 @@ void PSpecialSpinBox::putItem(PPortingAbstract * disp,const char * text2,  pixel
 
     PFont * f = fontDelegated();
     passert(f,"font is NULL");
-    disp->putText(text(),this->x(),this->y()+height(),*f,textColorDelegated());
-    disp->putText(text2,this->x() + w,this->y()+height(),*f,textColorDelegated());
+    disp->putText(text(),x,y+height(),*f,textColorDelegated());
+    disp->putText(text2,x + w,y+height(),*f,textColorDelegated());
+
 }
 
 void PSpecialSpinBox::setValue(int16_t temp)
@@ -145,8 +161,11 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
 
     if (key->key == kENTER)
     {
-        spinFlags.b.Toggled = !spinFlags.b.Toggled;
-        qlog(QString("%1 toggled").arg(name));
+        if (toggleable())
+        {
+            spinFlags.b.Toggled = !spinFlags.b.Toggled;
+            qlog(QString("%1 toggled").arg(name));
+        }
         if (sp.cb)
             sp.cb(key,this);
     };
@@ -156,80 +175,21 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
 
 void PSpecialSpinBox::formatNumber(char *output) const
 {
-    formatNumber(value,output,sp.dot,sp.max_len,sp.flags);
-}
-
-void PSpecialSpinBox::formatNumber(int16_t val, char *out, uint8_t dot, uint8_t max_len, uint8_t flags)
-{
-    uint8_t i = 0;
-    bool minus = false;
-    char output[20];
-    if (val < 0)
+    chsprintf(output,sp.fmt,value);
+    if (sp.dot)
     {
-        val = -val;
-        minus = true;
-    }
-
-    while(true)
-    {
-        if (i == dot && dot != 0)
+        uint8_t l = strlen(output)  ;
+        int i;
+        for (i = 0 ; i < sp.dot; i++)
         {
-            output[i] = '.';
-            i++;
+            output[l-i] = output[l-i-1];
         }
+        if (abs(value) <= sp.step)
+            output[l-i-1] = '0';
 
-        if (val == 0)
-        {
-            if (flags & 2)
-                while(max_len -1 > i)
-                {
-                    output[i] = '0';
-                    i++;
-                }
-            if (i == 0)
-                output[0] = '0';
-
-            if (output[i-1] == '.')
-            {
-                output[i] = '0';
-            }
-
-            if (minus)
-            {
-                if (output[i-1] == '.')
-                    i++;
-                output[i] = '-';
-            }
-            else if (flags & 1 && !minus)
-            {
-                if (output[i-1] == '.')
-                    i++;
-                output[i] = '+';
-            }
-            i++;
-            while (max_len  > i)
-            {
-                output[i] = ' ';
-                i++;
-            }
-
-            output[i] = 0;
-            break;
-        }
-
-        output[i] = (val % 10) + '0';
-        val /= 10;
-        i++;
+        output[l-i] = '.';
+        output[l+1] = 0;
     }
-
-    char *p = &output[strlen(output)-1];
-    do
-    {
-        *out = *p;
-        out++;
-        p--;
-    } while(*p);
-    *out = 0;
 
 }
 
