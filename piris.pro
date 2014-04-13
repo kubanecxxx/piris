@@ -23,7 +23,9 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     qdisplay.h \
     main_screen.h \
-    menu_screen.h
+    menu_screen.h \
+    topeni_screen.h \
+    voda_screen.h
 
 
 

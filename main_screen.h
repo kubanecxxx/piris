@@ -8,16 +8,14 @@ const DECL_SCREEN_PROPERTIES(main_screen,piris::BLACK,piris::WHITE,piris::BLUE,&
 piris::PScreen main_screen(main_screen_p,&mast);
 
 //hours
-const DECL_SPECIALSPINBOX_PROPERTIES(
-        hours, 0,23,1, NULL, NULL,0, NULL,0,"%2u",
-             NULL);
-const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(hours,MARGIN,10,"",piris::INVALID,piris::INVALID,NULL,font8_p);
+const DECL_SPECIALSPINBOX_PROPERTIES(hours, 0,23,1, NULL, NULL,0, NULL,0,"%2u",NULL);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(hours,MARGIN,10,"",piris::INVALID,piris::INVALID,NULL,font8_p);
 piris::PSpecialSpinBox spin_hours(hours_sp,hours_p,&main_screen);
 
 //minutes
 const DECL_SPECIALSPINBOX_PROPERTIES(minutes, 0,59,1, NULL, NULL,0, NULL,0,"%.2u",NULL);
-//const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(minutes,26,10,"",piris::INVALID,piris::INVALID,NULL,font8_p);
-const DECL_COMMON_SPECIALSPINBOXWIDGET_PROPERTIES(minutes,MARGIN+16,10,":",font8_p);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(minutes,MARGIN+16,10,":",piris::INVALID,piris::INVALID,NULL,font8_p);
+//const DECL_COMMON_SPECIALSPINBOXWIDGET_PROPERTIES(minutes,MARGIN+16,10,":",font8_p);
 piris::PSpecialSpinBox spin_minutes(minutes_sp,minutes_p,&main_screen);
 
 //days
@@ -25,26 +23,28 @@ const char * den_table[7] =
 {
     "po", "ut","st","ct","pa","so","ne"
 };
-const DECL_COMMON_SPECIALSPINBOXWIDGET_PROPERTIES(day,MARGIN+90,10,"",font8_p);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(day,MARGIN+90,10,"",piris::INVALID,piris::INVALID,NULL,font8_p);
 const DECL_SPECIALSPINBOX_PROPERTIES(day, 0,6,1, NULL, den_table,7, NULL,0,"",NULL);
 piris::PSpecialSpinBox spin_day(day_sp,day_p,&main_screen);
 
 //program
-const char * program_table[4] =
+void cb_programSwitcher(piris::PKeyEvent * evt, piris::PSpecialSpinBox * spin);
+const char * program_table[5] =
 {
-    "Vypnuto","Manual ","Voda   ","Topeni"
+    "Vypnuto","Manual ","Voda   ","Topeni ","Zatop  "
 };
 const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(main_program,MARGIN,25,"",piris::INVALID,piris::INVALID,&font16,font16_p);
-const DECL_SPECIALSPINBOX_PROPERTIES(main_program, 0,3,1, NULL, program_table,4, NULL,0,"",NULL);
+const DECL_SPECIALSPINBOX_PROPERTIES(main_program, 0,4,1, cb_programSwitcher, program_table,5, NULL,0,"",NULL);
 DECL_SPECIAL_SPINBOX(main_program,&main_screen);
 
 //chtena
-const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaChtena,MARGIN+30,50,"",piris::INVALID,piris::INVALID,&font16,font16_p);
-const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaChtena, 0,500,5, NULL, NULL,0, NULL,2,"%3d~",NULL);
+void cb_temperature(piris::PKeyEvent * evt, piris::PSpecialSpinBox * spin);
+DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaChtena,MARGIN+30,50,"",piris::INVALID,piris::INVALID,&font16,font16_p);
+const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaChtena, 0,500,5, cb_temperature, NULL,0, NULL,2,"%3d~",NULL);
 DECL_SPECIAL_SPINBOX(main_teplotaChtena,&main_screen);
 
 //teplota1
-const DECL_SPECIALSPINBOXWIDGET_PROPERTIES(main_teplotaVoda,MARGIN,110,"Voda",piris::INVALID,piris::INVALID,&font16,font16_p);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaVoda,MARGIN,110,"Voda",piris::INVALID,piris::INVALID,&font16,font16_p);
 const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaVoda, 0,500,5, NULL, NULL,0, NULL,2,"%3d~",NULL);
 DECL_SPECIAL_SPINBOX(main_teplotaVoda,&main_screen);
 //teplota2

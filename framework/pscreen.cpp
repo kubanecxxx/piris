@@ -132,6 +132,10 @@ void PScreen::makeActive()
     passert(p, "no parent master");
     p->setActiveScreen(this);
     qlog (QString ("Active screen: %1").arg(name));
+
+#ifdef DRAWING_MODE_CHANGESONLY
+    dirty = true;
+#endif
 }
 
 void PScreen::setFocusWidget(PWidget *widget)

@@ -38,8 +38,9 @@ public:
         const secondCoor_t * sec;
     } specialspinbox_p;
 
-    PSpecialSpinBox(const specialspinbox_p & p, const PWidgetProperties_t & props, PScreen * screen = NULL);
-    size_t dataSize() const {return sizeof(*this);}
+    PSpecialSpinBox(const specialspinbox_p & p, const PWidgetProperties_t & props, PScreen * screen = NULL, bool Toggleabe = true);
+    PSpecialSpinBox(const specialspinbox_p & p,PWidgetProperties_t & props, PScreen * screen = NULL, bool Toggleabe = true);
+
 
 
 protected:
@@ -69,10 +70,11 @@ public:
     //getters
     inline bool toggled() const {return spinFlags.b.Toggled;}
     inline bool circulation() const {return spinFlags.b.Circulation;}
-    inline bool val() const {return value;}
+    inline int16_t val() const {return value;}
     inline bool toggleable() const {return spinFlags.b.toggleable;}
     //inline bool showvalue() const {return spinFlags.b.showValue;}
     inline bool hidden() const {return spinFlags.b.hide;}
+    virtual size_t dataSize() const;
 
     //setters
     inline void setCirculation(bool enabled) {spinFlags.b.Circulation = enabled;}
@@ -113,7 +115,7 @@ public:
     }
 
 #define DECL_SPECIAL_SPINBOX_SECOND_COORDINATES(name, x,y ) \
-    piris::PSpecialSpinBox::secondCoor_t name = \
+    piris::PSpecialSpinBox::secondCoor_t name##_sec = \
     {\
     x,y\
     }

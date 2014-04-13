@@ -8,14 +8,14 @@
 namespace piris
 {
 
-PSpecialSpinBox::PSpecialSpinBox(const specialspinbox_p &p, const PWidgetProperties_t &props, PScreen *screen):
+PSpecialSpinBox::PSpecialSpinBox(const specialspinbox_p &p, const PWidgetProperties_t &props, PScreen *screen, bool Toggleable):
     PWidget(props),
     sp(p),
     value(0)
 {
     spinFlags.w = 0;
     setCirculation(true);
-    setToggleable(true);
+    setToggleable(Toggleable);
     //setShowValue(true);
 
 
@@ -24,6 +24,19 @@ PSpecialSpinBox::PSpecialSpinBox(const specialspinbox_p &p, const PWidgetPropert
 
 }
 
+PSpecialSpinBox::PSpecialSpinBox(const specialspinbox_p &p, PWidgetProperties_t &props, PScreen *screen, bool Toggleabe):
+    PWidget(props),
+    sp(p),
+    value(0)
+{
+    spinFlags.w = 0;
+    setCirculation(true);
+    setToggleable(Toggleabe);
+    //setShowValue(true);
+
+    if (screen)
+        screen->addChild(this);
+}
 
 void PSpecialSpinBox::draw(PPortingAbstract *disp) const
 {
@@ -191,6 +204,16 @@ void PSpecialSpinBox::formatNumber(char *output) const
         output[l+1] = 0;
     }
 
+}
+
+size_t PSpecialSpinBox::dataSize() const
+{
+    size_t temp = 0;
+    if (!IsReadOnly())
+        temp += sizeof(PWidgetProperties_t);
+
+    temp += sizeof(*this);
+    return temp;
 }
 
 }

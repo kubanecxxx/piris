@@ -1,8 +1,7 @@
 #ifndef MENU_SCREEN_H
 #define MENU_SCREEN_H
 
-DECL_SCREEN_PROPERTIES(menu_screen,piris::BLACK,piris::WHITE,piris::BLUE,&font8,1);
-piris::PScreen menu_screen(menu_screen_p,&mast);
+piris::PScreen menu_screen(main_screen_p,&mast);
 
 void cb_enterMain(piris::PKeyEvent *, piris::PSpecialSpinBox *);
 void cb_enterVoda(piris::PKeyEvent *, piris::PSpecialSpinBox *);
