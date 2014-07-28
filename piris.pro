@@ -11,29 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = piris
 TEMPLATE = app
 
-
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    qdisplay.cpp \
-    guiinit.cpp \
-
-
-
-
-HEADERS  += mainwindow.h \
-    qdisplay.h \
-    main_screen.h \
-    menu_screen.h \
-    topeni_screen.h \
-    voda_screen.h
-
-
-
 DEFINES += KDEBUG
 
 
-FORMS    += mainwindow.ui \
-    qdisplay.ui
 
+include (testing_qt/testing.pri)
 include (framework/framework.pri)
 include (porting/port.pri)
