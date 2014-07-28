@@ -1,7 +1,7 @@
 #include "qdebugprint.h"
-#include "QTextBrowser"
 
 #ifdef QT_CORE_LIB
+#include "QTextBrowser"
 
 QTextBrowser * qDebugPrint::edit;
 

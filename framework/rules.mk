@@ -1,0 +1,3 @@
+PIRIS_FRAMEWORK := $(PIRIS)/framework
+CPPFILES +=  $(wildcard $(PIRIS_FRAMEWORK)/*.cpp) 
+INCDIR += $(PIRIS_FRAMEWORK)  

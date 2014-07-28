@@ -1,7 +1,13 @@
 #ifndef PASSERT_H
 #define PASSERT_H
 
+#ifdef QT_CORE_LIB
 #define passert(condition,message) Q_ASSERT(condition)
+#else
+#include "ch.h"
+#include <string.h>
+#define passert(condition,message) chDbgAssert(condition,message,0)
+#endif
 
 #ifdef QT_CORE_LIB
 #include "qdebugprint.h"
@@ -10,8 +16,9 @@
 #define qlog(text)
 #endif
 
+//one of this must be set as global project variable
 //#define DRAWING_MODE_LOOPED
-#define DRAWING_MODE_CHANGESONLY
+//#define DRAWING_MODE_CHANGESONLY
 
 #ifndef DRAWING_MODE_CHANGESONLY
 #ifndef DRAWING_MODE_LOOPED
