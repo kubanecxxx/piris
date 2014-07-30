@@ -14,7 +14,7 @@ typedef uint16_t key_t;
 //default keys, other can be easily added
 #define kUP   1
 #define kDOWN 2
-#define kENTER 3
+#define kENTER 4
 
 
 typedef enum keyEvt_t

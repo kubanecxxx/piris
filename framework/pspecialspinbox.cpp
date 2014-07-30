@@ -140,8 +140,17 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
         PWidget::standardNextPrev(key);
     }
 
-    if (key->key > kENTER || key->event != RELEASED)
-        return;
+    if (key->key == kENTER && key->event == RELEASED)
+    {
+        if (toggleable())
+        {
+            spinFlags.b.Toggled = !spinFlags.b.Toggled;
+            qlog(QString("%1 toggled").arg(name));
+        }
+        if (sp.cb)
+            sp.cb(key,this);
+        dirty = true;
+    };
 
     if (toggled() && (key->key == kDOWN || key->key == kUP) )
     {
@@ -169,21 +178,9 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
                 sp.cb(key,this);
 
         qlog(QString("%1 value %2").arg(name).arg(value));
+
+        dirty = true;
     }
-
-
-    if (key->key == kENTER)
-    {
-        if (toggleable())
-        {
-            spinFlags.b.Toggled = !spinFlags.b.Toggled;
-            qlog(QString("%1 toggled").arg(name));
-        }
-        if (sp.cb)
-            sp.cb(key,this);
-    };
-
-    dirty = true;
 }
 
 void PSpecialSpinBox::formatNumber(char *output) const
