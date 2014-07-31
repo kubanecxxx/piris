@@ -44,11 +44,15 @@ const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaChtena, 0,500,5, cb_temperature
 DECL_SPECIAL_SPINBOX(main_teplotaChtena,&main_screen);
 
 //teplota1
-const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaVoda,MARGIN,110,"Voda",piris::INVALID,piris::INVALID,&font16,font16_p);
+const DECL_LABEL_PROPERTIES(main_teplotaVoda_label,MARGIN,116,"Voda",piris::INVALID,piris::INVALID,&font8,font8_p);
+piris::PLabel main_teplotaVoda_label(main_teplotaVoda_label_p);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaVoda,MARGIN + 35,110,"",piris::INVALID,piris::INVALID,&font16,font16_p);
 const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaVoda, 0,500,5, NULL, NULL,0, NULL,2,"%3d~",NULL);
 DECL_SPECIAL_SPINBOX(main_teplotaVoda,&main_screen);
 //teplota2
-const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaDoma,MARGIN,80,"Doma",piris::INVALID,piris::INVALID,&font16,font16_p);
+const DECL_LABEL_PROPERTIES(main_teplotaDoma_label,MARGIN,86,"Doma",piris::INVALID,piris::INVALID,&font8,font8_p);
+piris::PLabel main_teplotaDoma_label(main_teplotaDoma_label_p);
+const DECL_SPECIALSPINBOXWIDGET_PROPERTIES_DISABLED(main_teplotaDoma,MARGIN + 35,80,"",piris::INVALID,piris::INVALID,&font16,font16_p);
 const DECL_SPECIALSPINBOX_PROPERTIES(main_teplotaDoma, 0,500,5, NULL, NULL,0, NULL,2,"%3d~",NULL);
 DECL_SPECIAL_SPINBOX(main_teplotaDoma,&main_screen);
 

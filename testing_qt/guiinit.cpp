@@ -45,6 +45,8 @@ piris::PMaster mast(&e,&t);
  *********************************************************/
 #include "voda_screen.h"
 
+
+
 piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
 {
     spin_hours.name = "hodiny";
@@ -54,6 +56,9 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
     main_screen.name = "main";
     main_topi.name = "topi";
     menu_screen.name = "menu";
+
+    main_screen.addChild(&main_teplotaVoda_label);
+    main_screen.addChild(&main_teplotaDoma_label);
 
     main_menu.setToggleable(false);
     menu_topeni.setToggleable(false);
