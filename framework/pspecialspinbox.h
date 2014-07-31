@@ -86,6 +86,15 @@ public:
 
     void formatNumber(char * output) const;
 
+    inline int16_t operator+=(int16_t inc) {setValue(val()+ inc); return val();}
+    inline int16_t operator-=(int16_t dec) {setValue(val() - dec); return val();}
+    inline int16_t operator++(int) {*this += 1; return val();}
+    inline int16_t operator--(int) {*this += -1; return val();}
+
+    inline int16_t operator=(int16_t ass) {setValue(ass); return val();}
+    inline operator int() {return val();}
+
+
 };
 
 }
