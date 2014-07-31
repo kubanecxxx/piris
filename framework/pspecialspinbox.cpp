@@ -152,7 +152,7 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
         dirty = true;
     };
 
-    if (toggled() && (key->key == kDOWN || key->key == kUP) )
+    if (toggled() && (key->key == kDOWN || key->key == kUP) && key->event == PRESSED )
     {
         int16_t s = 1;
         int16_t old = value;
