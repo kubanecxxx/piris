@@ -118,6 +118,9 @@ void PSpecialSpinBox::putItem(PPortingAbstract * disp,const char * text2,  pixel
 
 void PSpecialSpinBox::setValue(int16_t temp)
 {
+#ifdef DRAWING_MODE_CHANGESONLY
+	int16_t t = value;
+#endif
 
     if (temp <= sp.high_lim && temp >= sp.low_lim)
     {
@@ -131,6 +134,11 @@ void PSpecialSpinBox::setValue(int16_t temp)
     {
         value = sp.low_lim;
     }
+
+#ifdef DRAWING_MODE_CHANGESONLY
+    if (t != value)
+    	dirty = true;
+#endif
 }
 
 void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
