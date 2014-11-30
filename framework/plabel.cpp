@@ -28,7 +28,9 @@ void PLabel::draw(PPortingAbstract *disp) const
     PFont * f = fontDelegated();
     passert(f,"font is NULL");
     PWidget::draw(disp);
-    disp->putText(text(),x(),y()+height(),*f,textColorDelegated());
+
+    if (visible())
+    	disp->putText(text(),x(),y()+height(),*f,textColorDelegated());
 }
 
 void PLabel::processEvent(PKeyEvent *, PTouchEvent *)

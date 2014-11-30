@@ -67,9 +67,7 @@ void PWidget::construct(PWidget *par)
 void PWidget::draw(PPortingAbstract *disp) const
 {
     passert(parScreen, "no parent screen yet");
-    if (!visible())
-        return;
-
+#ifdef DRAWING_MODE_CHANGESONLY
     //draw root widget first
     pixel_t w=0,h=0,x=0,y=0;
 
@@ -81,7 +79,23 @@ void PWidget::draw(PPortingAbstract *disp) const
     //delegate color from parent widget or screen
     PColor tmp = backgroundColorDelegated();
     disp->putRectangle(x,x+w,y,y+h, tmp,true);
+#endif
+    if (!visible())
+        return;
 
+#ifndef DRAWING_MODE_CHANGESONLY
+    //draw root widget first
+    pixel_t w=0,h=0,x=0,y=0;
+
+
+    x = xGlobal(); y = yGlobal();
+    w = p.w; h = p.h;
+
+
+    //delegate color from parent widget or screen
+    PColor tmp = backgroundColorDelegated();
+    disp->putRectangle(x,x+w,y,y+h, tmp,true);
+#endif
     //draw all children
     PWidget * temp = child;
 
