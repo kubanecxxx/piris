@@ -7,7 +7,7 @@
 #include "ch.h"
 #include <string.h>
 #define abs(v) v
-#define passert(condition,message) chDbgAssert(condition,message)
+#define passert(condition,message) chDbgAssert(condition,message,0)
 #endif
 
 #ifdef QT_CORE_LIB
