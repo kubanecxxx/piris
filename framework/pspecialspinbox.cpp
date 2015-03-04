@@ -157,7 +157,9 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
         }
         if (sp.cb)
             sp.cb(key,this);
+#ifdef DRAWING_MODE_CHANGESONLY
         dirty = true;
+#endif
     };
 
     if (toggled() && (key->key == kDOWN || key->key == kUP) && key->event == PRESSED )
@@ -186,8 +188,9 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
                 sp.cb(key,this);
 
         qlog(QString("%1 value %2").arg(name).arg(value));
-
+#ifdef DRAWING_MODE_CHANGESONLY
         dirty = true;
+#endif
     }
 }
 
