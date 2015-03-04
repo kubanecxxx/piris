@@ -85,6 +85,7 @@ public:
     inline bool IsReadOnly() const {return m.flags.b.ReadOnly;}
     void setFocusWidget(PWidget * widget);
     size_t dataSize() const;
+    bool isActive() const ;
 
     friend class PMaster;
 };

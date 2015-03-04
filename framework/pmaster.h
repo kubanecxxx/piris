@@ -29,6 +29,8 @@ public:
     void main();
     inline void setHW(PPortingAbstract * port) {hw = port;}
 
+    PScreen * getActiveScreen() const {return activeScreen;}
+
 };
 
 }
