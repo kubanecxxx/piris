@@ -124,6 +124,9 @@ void PSpecialSpinBox::putItem(PPortingAbstract * disp,const char * text2,  pixel
 
 void PSpecialSpinBox::setValue(int16_t temp)
 {
+#ifdef DRAWING_MODE_CHANGESONLY
+	int16_t t = value;
+#endif
 
     if (temp <= sp.high_lim && temp >= sp.low_lim)
     {
@@ -137,6 +140,11 @@ void PSpecialSpinBox::setValue(int16_t temp)
     {
         value = sp.low_lim;
     }
+
+#ifdef DRAWING_MODE_CHANGESONLY
+    if (t != value)
+    	dirty = true;
+#endif
 }
 
 bool PSpecialSpinBox::eventForMe(const PKeyEvent *key,const PTouchEvent *touch) const
@@ -183,7 +191,9 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent * touch)
         }
         if (sp.cb)
             sp.cb(key,this);
+#ifdef DRAWING_MODE_CHANGESONLY
         dirty = true;
+#endif
     };
 
     if (toggled() && (key->key == kDOWN || key->key == kUP) && key->event == PRESSED )
@@ -212,8 +222,9 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent * touch)
                 sp.cb(key,this);
 
         qlog(QString("%1 value %2").arg(name).arg(value));
-
+#ifdef DRAWING_MODE_CHANGESONLY
         dirty = true;
+#endif
     }
 
     if (touch->event == PRESS)
