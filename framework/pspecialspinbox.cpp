@@ -4,6 +4,7 @@
 #include "pkeyevent.h"
 #include "pfont.h"
 #include "chsprintf.h"
+#include "ptouchevent.h"
 
 namespace piris
 {
@@ -69,20 +70,7 @@ void PSpecialSpinBox::draw(PPortingAbstract *disp) const
     pixel_t y = yGlobal();
 
     char pole[16];
-    const char * p;
-
-    if (sp.text_table && sp.table_size > value)
-        p = sp.text_table[value];
-    else if(sp.formater)
-    {
-        sp.formater(value,pole);
-        p = pole;
-    }
-    else
-    {
-        formatNumber(pole);
-        p = pole;
-    }
+    const char * p = makeString(pole);
 
     if (hidden())
     {
@@ -97,6 +85,24 @@ void PSpecialSpinBox::draw(PPortingAbstract *disp) const
     if (sp.sec)
         putItem(disp,p,sp.sec->x,sp.sec->y,tmp,tmp2);
 
+}
+
+const char * PSpecialSpinBox::makeString(char *ret) const
+{
+    const char * p;
+    if (sp.text_table && sp.table_size > value)
+        p = sp.text_table[value];
+    else if(sp.formater)
+    {
+        sp.formater(value,ret);
+        p = ret;
+    }
+    else
+    {
+        formatNumber(ret);
+        p = ret;
+    }
+    return p;
 }
 
 void PSpecialSpinBox::putItem(PPortingAbstract * disp,const char * text2,  pixel_t x, pixel_t y, PColor color1, PColor color2) const
@@ -133,7 +139,35 @@ void PSpecialSpinBox::setValue(int16_t temp)
     }
 }
 
-void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
+bool PSpecialSpinBox::eventForMe(const PKeyEvent *key,const PTouchEvent *touch) const
+{
+    //key event
+    if (hasFocus() && key->key)
+    {
+        qlog(QString("%1: key %2, %3").arg(name).arg(key->key).arg(key->event));
+        return true;
+    }
+
+    pixel_t x = xGlobal();
+    pixel_t y = yGlobal();
+    char pole[16];
+    const char * p = makeString(pole);
+    pixel_t w = width() + strlen(p) * fontDelegated()->width();
+
+    //touch event
+    if (touch->event && touch->x >= x && touch->x <= x + w &&
+            touch->y >= y && touch->y <= y + height())
+    {
+        qlog(QString("%1: touch %2;%3 ; %4").arg(name).arg(touch->x).
+             arg(touch->y).arg(touch->event));
+
+        return true;
+    }
+
+    return false;
+}
+
+void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent * touch)
 {
     if (!toggled())
     {
@@ -180,6 +214,16 @@ void PSpecialSpinBox::processEvent(PKeyEvent *key, PTouchEvent *)
         qlog(QString("%1 value %2").arg(name).arg(value));
 
         dirty = true;
+    }
+
+    if (touch->event == PRESS)
+    {
+        setFocus();
+        dirty = true;
+        if (sp.cb)
+            sp.cb(key,this);
+
+        qlog(QString("%1 value %2").arg(name).arg(value));
     }
 }
 

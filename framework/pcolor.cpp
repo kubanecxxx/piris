@@ -20,14 +20,14 @@ void PColor::set(uint16_t r, uint16_t g, uint16_t b)
     setG(g);
 }
 
-void PColor::setB(uint16_t b)
+void PColor::setR(uint16_t b)
 {
    // b >>= 3;
     data &= 0b0000011111111111;
     data |= b << 11;
 }
 
-void PColor::setR(uint16_t r)
+void PColor::setB(uint16_t r)
 {
   //  r >>= 3;
     data &= 0b1111111111100000;

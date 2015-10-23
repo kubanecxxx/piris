@@ -46,12 +46,14 @@ public:
 protected:
     virtual void draw(PPortingAbstract *disp) const;
     virtual void processEvent(PKeyEvent *key, PTouchEvent *touch);
+    virtual bool eventForMe(const PKeyEvent *key,const PTouchEvent *touch) const;
 
 private:
     const specialspinbox_p & sp;
     int16_t value;
 
     void putItem(PPortingAbstract * disp,const char * value,  pixel_t x, pixel_t y, PColor color1, PColor color2) const;
+    const char *  makeString(char * ret) const;
 
     union
     {

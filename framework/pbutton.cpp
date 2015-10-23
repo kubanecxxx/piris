@@ -37,9 +37,10 @@ void PButton::draw(PPortingAbstract *disp) const
     PFont * f = fontDelegated();
     passert(f,"font must not be NULL");
     char len = strlen(text());
-    int temp  = (f->width() * len) / 2;
-    pixel_t xx = xGlobal() - temp + width() / 2;
-    pixel_t yy = yGlobal() + height() / 2 + f->height()/ 2;
+    int temp  = (f->width() * len);
+    //pixel_t xx = xGlobal() - temp + width() / 2;
+    pixel_t xx = xGlobal() + (width() - temp) / 2;
+    pixel_t yy = yGlobal() + (height()  + f->height())/ 2;
 
     PColor farba = color();
     PColor farba2 = textColor();
@@ -51,16 +52,16 @@ void PButton::draw(PPortingAbstract *disp) const
 
     pixel_t xg = xGlobal();
     pixel_t yg = yGlobal();
-    disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),farba,true);
+    disp->putRectangle(xg,xg+width(),yg,yg+height(),farba,true);
 
     if (!hasFocus())
     {
-        disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),textColor());
+        disp->putRectangle(xg,xg+width(),yg,yg+height(),textColor());
     }
     else
     {
-        disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),parentScreen()->focusColor());
-           disp->putRectangleShaped(xg+1,xg+width()-1,yg+1,yg-1+height(),parentScreen()->focusColor());
+        //disp->putRectangleShaped(xg,xg+width(),yg,yg+height(),parentScreen()->focusColor());
+         //  disp->putRectangleShaped(xg+1,xg+width()-1,yg+1,yg-1+height(),parentScreen()->focusColor());
     }
     disp->putText(text(),xx,yy,*f,farba2);
 }
@@ -106,6 +107,10 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
     {
         pressed = false;
     }
+
+#ifdef DRAWING_MODE_CHANGESONLY
+        dirty = true;
+#endif
 }
 
 size_t PButton::dataSize() const
