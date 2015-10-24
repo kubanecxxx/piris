@@ -1,4 +1,5 @@
 #include "pportingabstract.h"
+#include "pfont.h"
 
 namespace piris
 {
@@ -38,4 +39,37 @@ void PPortingAbstract::putRectangleShaped(
     }
 }
 
+
+void PPortingAbstract::putText(const char *text, pixel_t x, pixel_t y, const PFont &font, PColor color)
+{
+    while (*text != 0)
+    {
+        putChar(*(text++), x, y, font, color);
+        x += font.width();
+    }
 }
+
+void PPortingAbstract::putChar(char znak, pixel_t x, pixel_t y, const PFont & font,  PColor color)
+{
+    uint8_t i,j;
+    uint32_t line;
+    uint8_t size = font.height();
+    uint8_t w = font.width();
+    pixel_t ex = x + w;
+    pixel_t ey = y - size;
+
+    const uint8_t * c = font.character(znak);
+    for (i = 0; i < size; i++ )
+    {
+        line = font.line(c,i);
+        for (j = 0; j < w; j++)
+        {
+            if (line & (1 << j))
+            {
+                putPixel(ex - j, ey+ i,color);
+            }
+        }
+    }
+}
+}
+

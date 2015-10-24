@@ -102,7 +102,8 @@ void porting::putRectangle(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColo
 
 void porting::putText(const char *text, pixel_t x, pixel_t y, const PFont & font, PColor color)
 {
-    disp->putText(x,y,text,color.get(),font.height());
+    //disp->putText(x,y,text,color.get(),font.height());
+    PPortingAbstract::putText(text,x,y,font,color);
 }
 
 void porting::fill(PColor color)
