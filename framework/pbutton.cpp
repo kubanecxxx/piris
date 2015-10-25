@@ -6,6 +6,9 @@
 #include "pscreen.h"
 #include "pfont.h"
 
+#ifdef EMBEDDED_TARGET
+#include "ch.h"
+#endif
 
 namespace piris
 {
@@ -46,7 +49,7 @@ void PButton::draw(PPortingAbstract *disp) const
     PColor farba2 = textColor();
     if (pressed)
     {
-        farba = color().dark(7,8);
+        farba = color().dark(6,8);
        // farba2 = textColor().invert();
     }
 
@@ -56,7 +59,7 @@ void PButton::draw(PPortingAbstract *disp) const
 
     if (!hasFocus())
     {
-        disp->putRectangle(xg,xg+width(),yg,yg+height(),textColor());
+        disp->putRectangle(xg,xg+width(),yg,yg+height(),textColor(),false);
     }
     else
     {
@@ -66,6 +69,15 @@ void PButton::draw(PPortingAbstract *disp) const
     disp->putText(text(),xx,yy,*f,farba2);
 }
 
+#ifdef EMBEDDED_TARGET
+void PButton::timeout(void * arg)
+{
+    PButton * self = (PButton*)arg;
+
+    self->dirty = true;
+    self->pressed = false;
+}
+#endif
 
 void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
 {
@@ -79,14 +91,27 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
     if (touch->event == PRESS)
     {
         setFocus();
+#ifdef EMBEDDED_TARGET
+        if (cb)
+            cb(this);
+
+        uint8_t l;
+        chSysLock();
+        l = chVTIsArmedI(&tmr);
+        chSysUnlock();
+        if (l)
+        {
+            chVTReset(&tmr);
+        }
+        chVTSet(&tmr,MS2ST(500),timeout,this);
+#endif
         pressed = true;
     }
 
     if (touch->event == RELEASE)
     {
         qlog(name + ": button press callback touch");
-        if (cb)
-            cb(this);
+
         pressed = false;
     }
 

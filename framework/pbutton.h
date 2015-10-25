@@ -24,6 +24,10 @@ protected:
 private:
     bool pressed;
     cb_t cb;
+#ifdef EMBEDDED_TARGET
+    virtual_timer_t tmr;
+    static void timeout(void * arg );
+#endif
 };
 
 #define DECL_BUTTON_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font) \
