@@ -71,5 +71,41 @@ void PPortingAbstract::putChar(char znak, pixel_t x, pixel_t y, const PFont & fo
         }
     }
 }
+
+void PPortingAbstract::putLine(pixel_t x1, pixel_t x2, pixel_t y1, pixel_t y2, PColor color)
+{
+    uint16_t deltay = (y2-y1);
+    uint16_t deltax = (x2-x1);
+    uint16_t *dx,*dy;
+
+    dx = &deltax;
+    dy = &deltay;
+
+    uint16_t i, y_temp;
+    uint16_t *pi,*py_temp;
+    pi = &i;
+    py_temp = &y_temp;
+
+    if (deltax < deltay)
+    {
+        dx = &deltay;
+        dy = &deltax;
+        pi = &y_temp;
+        py_temp = &i;
+
+    }
+
+    uint32_t tan = (*dy << 6) / (*dx);
+
+
+    for (i = 0; i < (*dx); i++)
+    {
+        y_temp = tan * i;
+        //zaokrouhlení na jeden bit
+        y_temp = (y_temp + 1) >> 6;
+        putPixel( *pi + x1, y1 + *py_temp, color);
+    }
+}
+
 }
 

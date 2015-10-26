@@ -17,7 +17,8 @@ HEADERS += pportingabstract.h \
     plabel.h \
     pcheckbox.h \
     pspecialspinbox.h \
-    chsprintf.h
+    chsprintf.h \
+    framework/utils/touch_calibration.h
 
 SOURCES += \
     pkeyevent.cpp \
@@ -33,5 +34,7 @@ SOURCES += \
     framework/plabel.cpp \
     framework/pcheckbox.cpp \
     framework/pspecialspinbox.cpp \
-    framework/chsprintf.cpp
+    framework/chsprintf.cpp \
+    framework/utils/touch_calibration.cpp
 
+DEFINES += PIRIS_USE_CALIBRATOR

@@ -5,6 +5,10 @@
 #include "pkeyevent.h"
 #include "ptouchevent.h"
 
+#ifdef PIRIS_USE_CALIBRATOR
+#include "utils/touch_calibration.h"
+#endif
+
 namespace piris
 {
 
@@ -63,9 +67,41 @@ void PMaster::main()
             *key = tmp;
             *touch = tch;
             passert(activeScreen, "no screen is active");
-            activeScreen->sendEvent(touch, &tmp);
+            activeScreen->sendEvent(&tch, &tmp);
         }
     }
 }
+
+#ifdef PIRIS_USE_CALIBRATOR
+void PMaster::main(touchCalibration *calibrator,const touchCalibration::corrections_t *corrections)
+{
+    if (calibrator)
+    {
+        calibrator->loop();
+    }
+    else
+    {
+        printScreen();
+
+        PTouchEvent tch;
+        PKeyEvent tmp;
+
+        if (hw->readKeyEvent(&tmp) || hw->readTouchEvent(&tch))
+        {
+            if (!(tmp == *key) || !(tch == *touch))
+            {
+                //tch.xRelative = tch.x;
+                //tch.yRelative = tch.y;
+                *key = tmp;
+                *touch = tch;
+                passert(activeScreen, "no screen is active");
+                if (corrections)
+                    touchCalibration::rawToPixels(&tch,corrections);
+                activeScreen->sendEvent(&tch, &tmp);
+            }
+        }
+    }
+}
+#endif
 
 }
