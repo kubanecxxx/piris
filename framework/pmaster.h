@@ -32,7 +32,7 @@ public:
     void printScreen();
     void main();
 #ifdef PIRIS_USE_CALIBRATOR
-    void main(touchCalibration * calibrator, const touchCalibration::corrections_t * corrections);
+    void main(touchCalibration * calibrator, const touchCalibration::corrections_t * corrections, bool calibrate);
 #endif
 
     inline void setHW(PPortingAbstract * port) {hw = port;}

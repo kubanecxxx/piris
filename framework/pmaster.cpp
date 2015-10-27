@@ -73,9 +73,9 @@ void PMaster::main()
 }
 
 #ifdef PIRIS_USE_CALIBRATOR
-void PMaster::main(touchCalibration *calibrator,const touchCalibration::corrections_t *corrections)
+void PMaster::main(touchCalibration *calibrator,const touchCalibration::corrections_t *corrections, bool calibrate)
 {
-    if (calibrator)
+    if (calibrator && calibrate)
     {
         calibrator->loop();
     }

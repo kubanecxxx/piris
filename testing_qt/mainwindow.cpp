@@ -12,8 +12,12 @@
 #include "pfont.h"
 #include <QDebug>
 #include "plabel.h"
+#include "utils/touch_calibration.h"
 
 extern piris::PMaster * guiInit(piris::PPortingAbstract * port, int & siz);
+extern piris::PMaster * mirekGuiInit(piris::PPortingAbstract * port, int & siz);
+extern piris::PMaster * lichtmustrGuiInit(piris::PPortingAbstract * port, int & size);
+piris::touchCalibration * cal ;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,7 +27,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     qDebugPrint::edit = ui->textBrowser;
 
+    QPalette palette;
+    palette.setBrush(QPalette::Base, Qt::NoBrush);
+    setPalette(palette);
+    // Required to display wallpaper
+    //setAttribute(Qt::WA_TranslucentBackground);
+    // no border at all finally
 
+    //setFrameShape(QFrame::NoFrame);
+    //setAttribute(Qt::WA_NoSystemBackground, true);
+    //setAttribute(Qt::WA_NoBackground, true);
+    //setAttribute(Qt::WA_TranslucentBackground, true);
+    //setAttribute(Qt::WA_OpaquePaintEvent, true);
+    //setAttribute(Qt::WA_PaintOnScreen);
+    //setAutoFillBackground(true);
+    //setWindowOpacity(1);
 
     ui->display->setFocus();
 
@@ -36,8 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
     piris::PPortingAbstract * port;
     port = new porting(ui->display);
 
-    //ui->display->setMinimumSize(200,300);
-    ui->display->setMinimumSize(128,160);
+    ui->display->setMinimumSize(120,160);
+    //ui->display->setMinimumSize(320,240);
 
     /*
      **********************************************
@@ -45,9 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     int size;
     mast = guiInit(port,size);
+    //mast = mirekGuiInit(port,size);
+    //mast = lichtmustrGuiInit(port,size);
 
-
-    ui->spinMemory->setValue(size);
+    //ui->spinMemory->setValue(size);
 
     //temp = new piris::PWidget(coje);
     //temp->setX(50);
@@ -65,6 +84,7 @@ MainWindow::~MainWindow()
 void MainWindow::timeout()
 {
     mast->main();
+    //cal->loop();
 }
 
 

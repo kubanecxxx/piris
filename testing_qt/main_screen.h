@@ -63,7 +63,9 @@ const DECL_COMMON_SPECIALSPINBOXWIDGET_PROPERTIES(main_menu,MARGIN,140,"MENU",fo
 const DECL_SPECIALSPINBOX_PROPERTIES(main_menu, 0,6,1, cb, NULL,0, NULL,0,"",NULL);
 piris::PSpecialSpinBox main_menu(main_menu_sp,main_menu_p,&main_screen);
 
-
+//square
+DECL_WIDGET_PROPERTIES(main_square,110,140,15,15,piris::RED);
+piris::PWidget main_square(main_square_p);
 
 //topim/netopim
 const char * topi_table[2] =

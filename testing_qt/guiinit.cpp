@@ -14,11 +14,11 @@
 #include "pspecialspinbox.h"
 
 #define MARGIN  5
-//fonts
-static const DECL_FONT(font8_p,NULL,8,8);
-static const DECL_FONT(font16_p,NULL,16,16);
-piris::PFont font8(font8_p);
-piris::PFont font16(font16_p);
+
+#define font16 (piris::PFont::terminus16)
+#define font16_p (piris::PFont::font_terminus_16_p)
+#define font8 (piris::PFont::terminus12)
+#define font8_p (piris::PFont::font_terminus_12_p)
 
 //main
 piris::PKeyEvent e;
@@ -59,6 +59,9 @@ piris::PMaster * guiInit(piris::PPortingAbstract * port, int & size)
 
     main_screen.addChild(&main_teplotaVoda_label);
     main_screen.addChild(&main_teplotaDoma_label);
+    main_screen.addChild(&main_square);
+    main_square.setSelectable(false);
+    main_square.setEnabled(false);
 
     main_menu.setToggleable(false);
     menu_topeni.setToggleable(false);
