@@ -58,7 +58,7 @@ void PCheckBox::processEvent(PKeyEvent *key, PTouchEvent *touch)
     if ((key->key == kENTER && key->event == PRESSED) || (touch->event == PRESS))
     {
         checked = !checked;
-#if DRAWING_MODE_CHANGESONLY
+#ifdef DRAWING_MODE_CHANGESONLY
         dirty = true;
 #endif
         qlog(QString("check! %1").arg(checked));
