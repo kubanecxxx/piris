@@ -35,6 +35,6 @@ endforeach()
 message("${PIRIS_HEADERS}")
 
 
-add_library (piris OBJECT ${PIRIS_SOURCES} ${PIRIS_HEADERS})
-target_include_directories(user_code PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library (piris STATIC ${PIRIS_SOURCES} ${PIRIS_HEADERS})
+target_include_directories(${USER_CODE} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
