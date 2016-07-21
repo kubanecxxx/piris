@@ -58,7 +58,9 @@ void PMaster::main()
     PTouchEvent tch;
     PKeyEvent tmp;
 
-    if (hw->readKeyEvent(&tmp) || hw->readTouchEvent(&tch))
+    touchHappen = hw->readTouchEvent(&tch);
+    keyHappen = hw->readKeyEvent(&tmp);
+    if (touchHappen || keyHappen)
     {
         if (!(tmp == *key) || !(tch == *touch))
         {
@@ -86,7 +88,9 @@ void PMaster::main(touchCalibration *calibrator,const touchCalibration::correcti
         PTouchEvent tch;
         PKeyEvent tmp;
 
-        if (hw->readKeyEvent(&tmp) || hw->readTouchEvent(&tch))
+        touchHappen = hw->readTouchEvent(&tch);
+        keyHappen = hw->readKeyEvent(&tmp);
+        if (touchHappen || keyHappen)
         {
             if (!(tmp == *key) || !(tch == *touch))
             {

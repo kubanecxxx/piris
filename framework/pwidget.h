@@ -166,13 +166,13 @@ typedef enum
 #define _DECL_WIDGET_PROPERTIES(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
     piris::PWidget::PWidgetProperties_t name##_p =  \
     { \
-    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly | piris::enable\
+    backgroundColor,x,y,w,h,font,textColor,text,{ flags | piris::visible | piris::readonly | piris::enable}\
     }
 
 #define _DECL_WIDGET_PROPERTIES_DISABLED(name,x,y,w,h,text,textColor,backgroundColor,font, flags  ) \
     piris::PWidget::PWidgetProperties_t name##_p =  \
     { \
-    backgroundColor,x,y,w,h,font,textColor,text, flags | piris::visible | piris::readonly \
+    backgroundColor,x,y,w,h,font,textColor,text, {flags | piris::visible | piris::readonly }\
     }
 
 #endif // PWIDGET_H

@@ -30,6 +30,8 @@ typedef enum globalColors_t
     INVALID= 0,RED = 0xF100, GREEN = 0x07E0, BLACK = 1, WHITE = 0xFFFF, BLUE = 0x001F
 } globalColors_t;
 
+#define MIX_COLOR(r,g,b) (((r >> 3) & 0b11111)<< 11 | ((g >> 2) & 0b111111) << 5 | ((b >> 3) & 0b111111))
+
 //touch
 typedef enum touchEvt_t
 {

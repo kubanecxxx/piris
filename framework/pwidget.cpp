@@ -355,6 +355,10 @@ size_t PWidget::dataSize() const
     if (!p.flags.b.ReadOnly)
         size += sizeof(PWidgetProperties_t);
 
+    #ifdef QT_CORE_LIB
+    size -= sizeof(name);
+    #endif
+
     while(temp != NULL)
     {
         size += temp->dataSize();

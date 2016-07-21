@@ -13,6 +13,7 @@ pspecialspinbox
 ptouchevent
 pwidget
 qdebugprint
+utils/touch_calibration
 )
 
 set (PIRIS_SOURCES
@@ -37,4 +38,6 @@ message("${PIRIS_HEADERS}")
 
 add_library (piris STATIC ${PIRIS_SOURCES} ${PIRIS_HEADERS})
 target_include_directories(${USER_CODE} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(piris PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(piris ${ChibiOS_rt})
 

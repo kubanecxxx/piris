@@ -18,6 +18,8 @@ class PMaster
 public:
     PMaster(PPortingAbstract * port);
     PMaster(PKeyEvent * k, PTouchEvent * t);
+    inline bool touchEventHappened() const {return touchHappen;}
+    inline bool keyEventHappened() const {return keyHappen;}
 
 private:
     PPortingAbstract * hw;
@@ -26,6 +28,9 @@ private:
 
     PKeyEvent * key;
     PTouchEvent * touch;
+
+    bool touchHappen;
+    bool keyHappen;
 
 public:
     void setActiveScreen(PScreen * screen);

@@ -8,8 +8,8 @@ HEADERS += pportingabstract.h \
     ptypes.h \
     passert.h \
     pcolor.h \
-    framework/pwidget.h \
-    framework/pmaster.h \
+    pwidget.h \
+    pmaster.h \
     pscreen.h \
     qdebugprint.h \
     pbutton.h \
@@ -18,23 +18,23 @@ HEADERS += pportingabstract.h \
     pcheckbox.h \
     pspecialspinbox.h \
     chsprintf.h \
-    framework/utils/touch_calibration.h
+    utils/touch_calibration.h
 
 SOURCES += \
     pkeyevent.cpp \
     ptouchevent.cpp \
-    framework/pcolor.cpp \
-    framework/pwidget.cpp \
-    framework/pmaster.cpp \
+    pcolor.cpp \
+    pwidget.cpp \
+    pmaster.cpp \
     pscreen.cpp \
-    framework/qdebugprint.cpp \
-    framework/pbutton.cpp \
-    framework/pportingabstract.cpp \
-    framework/pfont.cpp \
-    framework/plabel.cpp \
-    framework/pcheckbox.cpp \
-    framework/pspecialspinbox.cpp \
-    framework/chsprintf.cpp \
-    framework/utils/touch_calibration.cpp
+    qdebugprint.cpp \
+    pbutton.cpp \
+    pportingabstract.cpp \
+    pfont.cpp \
+    plabel.cpp \
+    pcheckbox.cpp \
+    pspecialspinbox.cpp \
+    chsprintf.cpp \
+    utils/touch_calibration.cpp
 
 DEFINES += PIRIS_USE_CALIBRATOR

@@ -37,6 +37,10 @@ PButton::PButton(const PWidgetProperties_t &props, PWidget *par):
 
 void PButton::draw(PPortingAbstract *disp) const
 {
+    if (!visible())
+    {
+        return;
+    }
     PFont * f = fontDelegated();
     passert(f,"font must not be NULL");
     char len = strlen(text());
@@ -91,10 +95,10 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
     if (touch->event == PRESS)
     {
         setFocus();
-#ifdef EMBEDDED_TARGET
+//#ifdef EMBEDDED_TARGET
         if (cb)
             cb(this);
-
+#ifdef EMBEDDED_TARGET
         uint8_t l;
         chSysLock();
         l = chVTIsArmedI(&tmr);
@@ -139,8 +143,8 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
 }
 
 size_t PButton::dataSize() const
-{
-    return sizeof(this) + PWidget::dataSize();
+{    
+    return sizeof(pressed) + sizeof(cb) + PWidget::dataSize();
 }
 
 }

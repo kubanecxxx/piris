@@ -2,6 +2,7 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 VPATH += $$PWD
 
-HEADERS += porting.h
-SOURCES += porting.cpp
+HEADERS += porting.h qdisplay.h
+SOURCES += porting.cpp qdisplay.cpp
+FORMS += qdisplay.ui
 
