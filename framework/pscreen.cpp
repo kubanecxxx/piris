@@ -164,7 +164,7 @@ size_t PScreen::dataSize() const
 
 bool PScreen::isActive() const
 {
-	parent()->getActiveScreen();
+    return this == parent()->getActiveScreen();
 }
 
 }

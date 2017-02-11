@@ -16,21 +16,24 @@ namespace piris
 PButton::PButton(PWidget * par ):
     PWidget(par),
     pressed(false),
-    cb(NULL)
+    cb(NULL),
+    timeout_const(500)
 {
 }
 
 PButton::PButton(PWidgetProperties_t &props, PWidget *par):
     PWidget(props,par),
     pressed(false),
-    cb(NULL)
+    cb(NULL),
+    timeout_const(500)
 {
 }
 
 PButton::PButton(const PWidgetProperties_t &props, PWidget *par):
     PWidget(props,par),
     pressed(false),
-    cb(NULL)
+    cb(NULL),
+    timeout_const(500)
 {
 
 }
@@ -78,10 +81,16 @@ void PButton::timeout(void * arg)
 {
     PButton * self = (PButton*)arg;
 
-    self->dirty = true;
-    self->pressed = false;
+    self->reset();
+
 }
 #endif
+
+void PButton::reset()
+{
+    dirty = true;
+    pressed = false;
+}
 
 void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
 {
@@ -96,8 +105,8 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
     {
         setFocus();
 //#ifdef EMBEDDED_TARGET
-        if (cb)
-            cb(this);
+        if (this->cb)
+            this->cb(this);
 #ifdef EMBEDDED_TARGET
         uint8_t l;
         chSysLock();
@@ -107,7 +116,7 @@ void PButton::processEvent(PKeyEvent *key, PTouchEvent *touch)
         {
             chVTReset(&tmr);
         }
-        chVTSet(&tmr,MS2ST(500),timeout,this);
+        chVTSet(&tmr,MS2ST(timeout_const),timeout,this);
 #endif
         pressed = true;
     }
